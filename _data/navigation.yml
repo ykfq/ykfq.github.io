@@ -1,0 +1,14 @@
+# main links
+main:
+  - title: "Recent"
+    url: /recent/
+  - title: "Collections"
+    url: /collections/
+  - title: "Tags"
+    url: /tags/
+  - title: "Archive"
+    url: /archive/
+  - title: "Life"
+    url: /life/
+  - title: "About"
+    url: /about/

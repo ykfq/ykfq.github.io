@@ -1,0 +1,70 @@
+/* ==========================================================================
+   Contrast skin
+   ========================================================================== */
+
+/* Colors */
+$text-color: #000 !default;
+$muted-text-color: $text-color !default;
+$primary-color: #ff0000 !default;
+$border-color: mix(#fff, $text-color, 75%) !default;
+$footer-background-color: #000 !default;
+$link-color: #0000ff !default;
+$masthead-link-color: $text-color !default;
+$masthead-link-color-hover: $text-color !default;
+$navicon-link-color-hover: mix(#fff, $text-color, 80%) !default;
+
+/*
+/* contrast syntax highlighting (base16) */
+$base00: #000000;
+$base01: #242422;
+$base02: #484844;
+$base03: #6c6c66;
+$base04: #918f88;
+$base05: #b5b3aa;
+$base06: #d9d7cc;
+$base07: #fdfbee;
+$base08: #ff6c60;
+$base09: #e9c062;
+$base0a: #ffffb6;
+$base0b: #a8ff60;
+$base0c: #c6c5fe;
+$base0d: #96cbfe;
+$base0e: #ff73fd;
+$base0f: #b18a3d;
+
+/* neon syntax highlighting (base16) */
+$base00: #ffffff; !default;
+$base01: #e0e0e0; !default;
+$base02: #d0d0d0; !default;
+$base03: #b0b0b0; !default;
+$base04: #000000; !default;
+$base05: #101010; !default;
+$base06: #151515; !default;
+$base07: #202020; !default;
+$base08: #ff0086; !default;
+$base09: #fd8900; !default;
+$base0a: #aba800; !default;
+$base0b: #00c918; !default;
+$base0c: #1faaaa; !default;
+$base0d: #3777e6; !default;
+$base0e: #ad00a1; !default;
+$base0f: #cc6633; !default;
+
+.page__content {
+  .notice,
+  .notice--primary,
+  .notice--info,
+  .notice--warning,
+  .notice--success,
+  .notice--danger {
+    color: $text-color;
+  }
+}
+
+.page__footer {
+  color: #fff !important; // override
+}
+
+.page__footer-follow .social-icons .svg-inline--fa {
+  color: inherit;
+}

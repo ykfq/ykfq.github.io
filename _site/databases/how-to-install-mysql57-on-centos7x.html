@@ -1,0 +1,1814 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.12.0 by Michael Rose
+  Copyright 2013-2018 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE.txt
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>如何在 CentOS 7.x 上安装 MySQL 5.7 - 美景定当不负</title>
+<meta name="description" content="如何在 CentOS 7.x 上安装 MySQL 5.7">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="美景定当不负">
+<meta property="og:title" content="如何在 CentOS 7.x 上安装 MySQL 5.7">
+<meta property="og:url" content="http://192.168.100.100:4000/databases/how-to-install-mysql57-on-centos7x">
+
+
+  <meta property="og:description" content="如何在 CentOS 7.x 上安装 MySQL 5.7">
+
+
+
+  <meta property="og:image" content="http://192.168.100.100:4000/assets/images/earth-night.jpg">
+
+
+
+
+
+  <meta property="article:published_time" content="2018-08-04T00:00:00+08:00">
+
+
+
+  <meta property="article:modified_time" content="2018-07-28T00:00:00+08:00">
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://192.168.100.100:4000/databases/how-to-install-mysql57-on-centos7x">
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "Person",
+      "name": "NOZUONOHIGH",
+      "url": "http://192.168.100.100:4000",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="美景定当不负 Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if lte IE 9]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--tags">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    <div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        <a class="site-title" href="/">美景定当不负</a>
+        <ul class="visible-links">
+          
+            
+            <li class="masthead__menu-item">
+              <a href="http://192.168.100.100:4000/recent/" >Recent</a>
+            </li>
+          
+            
+            <li class="masthead__menu-item">
+              <a href="http://192.168.100.100:4000/collections/" >Collections</a>
+            </li>
+          
+            
+            <li class="masthead__menu-item">
+              <a href="http://192.168.100.100:4000/tags/" >Tags</a>
+            </li>
+          
+            
+            <li class="masthead__menu-item">
+              <a href="http://192.168.100.100:4000/archive/" >Archive</a>
+            </li>
+          
+            
+            <li class="masthead__menu-item">
+              <a href="http://192.168.100.100:4000/life/" >Life</a>
+            </li>
+          
+            
+            <li class="masthead__menu-item">
+              <a href="http://192.168.100.100:4000/about/" >About</a>
+            </li>
+          
+        </ul>
+        
+        <button class="search__toggle" type="button">
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle Menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+  
+
+
+
+
+
+
+
+
+
+
+
+<div class="page__hero"
+  style=" "
+>
+  
+    <img src="/assets/images/earth-night.jpg" alt="如何在 CentOS 7.x 上安装 MySQL 5.7" class="page__hero-image">
+  
+  
+</div>
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="http://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+
+      
+        <img src="https://wx3.sinaimg.cn/large/6ee6fa3egy1fu7gca44jkj20go0goqgo.jpg" alt="NOZUONOHIGH" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">NOZUONOHIGH</h3>
+    
+    
+      <p class="author__bio" itemprop="description">
+        想巴适得板就花时间弄。
+      </p>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="http://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">Chengdu, China</span>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://github.com/ykfq" itemprop="sameAs">
+            <i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://www.weibo.com/valiantjiang" itemprop="sameAs">
+            <i class="fab fa-fw fa-weibo" aria-hidden="true"></i> Weibo
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <div class="archive">
+    
+      <h1 id="page-title" class="page__title">如何在 CentOS 7.x 上安装 MySQL 5.7</h1>
+    
+    <h3 id="1-安装mysql57">1. 安装mysql5.7</h3>
+
+<h4 id="centos6x">CentOS6.x</h4>
+<p>使用中国科技大学镜像源：https://mirrors.ustc.edu.cn/mysql-ftp/Downloads/</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">version</span><span class="o">=</span>5.7.22-1  
+curl <span class="nt">-SLO</span> https://mirrors.ustc.edu.cn/mysql-ftp/Downloads/MySQL-5.7/mysql-community-libs-<span class="k">${</span><span class="nv">version</span><span class="k">}</span>.el6.x86_64.rpm
+curl <span class="nt">-SLO</span> https://mirrors.ustc.edu.cn/mysql-ftp/Downloads/MySQL-5.7/mysql-community-devel-<span class="k">${</span><span class="nv">version</span><span class="k">}</span>.el6.x86_64.rpm
+curl <span class="nt">-SLO</span> https://mirrors.ustc.edu.cn/mysql-ftp/Downloads/MySQL-5.7/mysql-community-common-<span class="k">${</span><span class="nv">version</span><span class="k">}</span>.el6.x86_64.rpm
+curl <span class="nt">-SLO</span> https://mirrors.ustc.edu.cn/mysql-ftp/Downloads/MySQL-5.7/mysql-community-server-<span class="k">${</span><span class="nv">version</span><span class="k">}</span>.el6.x86_64.rpm
+curl <span class="nt">-SLO</span> https://mirrors.ustc.edu.cn/mysql-ftp/Downloads/MySQL-5.7/mysql-community-client-<span class="k">${</span><span class="nv">version</span><span class="k">}</span>.el6.x86_64.rpm
+
+yum <span class="nt">-y</span> remove mariadb<span class="k">*</span>
+yum <span class="nt">-y</span> <span class="nb">install </span>numactl
+yum <span class="nt">-y</span> localinstall mysql-community-<span class="k">*</span>.rpm
+
+<span class="nb">sed</span> <span class="nt">-i</span> <span class="s1">'/mysqld/a\user=mysql'</span> /etc/my.cnf
+chkconfig mysqld on
+service mysqld start 
+<span class="nb">grep</span> <span class="s2">"temporary password"</span> /var/log/mysqld.log
+mysql_secure_installation
+mysql <span class="nt">-uroot</span> <span class="nt">-p</span>
+</code></pre></div></div>
+
+<h4 id="centos7x">CentOS7.x</h4>
+<p>使用中国科技大学镜像源：https://mirrors.ustc.edu.cn/mysql-ftp/Downloads/</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">version</span><span class="o">=</span>5.7.22-1  
+curl <span class="nt">-SLO</span> https://mirrors.ustc.edu.cn/mysql-ftp/Downloads/MySQL-5.7/mysql-community-libs-<span class="k">${</span><span class="nv">version</span><span class="k">}</span>.el7.x86_64.rpm
+curl <span class="nt">-SLO</span> https://mirrors.ustc.edu.cn/mysql-ftp/Downloads/MySQL-5.7/mysql-community-devel-<span class="k">${</span><span class="nv">version</span><span class="k">}</span>.el7.x86_64.rpm
+curl <span class="nt">-SLO</span> https://mirrors.ustc.edu.cn/mysql-ftp/Downloads/MySQL-5.7/mysql-community-common-<span class="k">${</span><span class="nv">version</span><span class="k">}</span>.el7.x86_64.rpm
+curl <span class="nt">-SLO</span> https://mirrors.ustc.edu.cn/mysql-ftp/Downloads/MySQL-5.7/mysql-community-server-<span class="k">${</span><span class="nv">version</span><span class="k">}</span>.el7.x86_64.rpm
+curl <span class="nt">-SLO</span> https://mirrors.ustc.edu.cn/mysql-ftp/Downloads/MySQL-5.7/mysql-community-client-<span class="k">${</span><span class="nv">version</span><span class="k">}</span>.el7.x86_64.rpm
+
+yum <span class="nt">-y</span> remove mariadb<span class="k">*</span>
+yum <span class="nt">-y</span> <span class="nb">install </span>numactl
+yum <span class="nt">-y</span> localinstall mysql-community-<span class="k">*</span>.rpm
+
+<span class="nb">sed</span> <span class="nt">-i</span> <span class="s1">'/\[mysqld\]/a\performance_schema = ON'</span> /etc/my.cnf
+<span class="nb">sed</span> <span class="nt">-i</span> <span class="s1">'/\[mysqld\]/a\user=mysql'</span> /etc/my.cnf
+<span class="nb">sed</span> <span class="nt">-i</span> <span class="s1">'/mysql.sock/a\character_set_server = utf8'</span> /etc/my.cnf
+
+systemctl <span class="nb">enable </span>mysqld<span class="p">;</span> systemctl start mysqld
+
+<span class="c">#修改密码强度策略(一定要在上面那步初始化启动完成之后再修改)</span>
+<span class="nb">sed</span> <span class="nt">-i</span> <span class="s1">'/mysql.sock/a\validate_password_policy = 0'</span> /etc/my.cnf
+systemctl restart mysqld
+
+<span class="nb">grep</span> <span class="s2">"temporary password"</span> /var/log/mysqld.log | <span class="nb">awk</span> <span class="nt">-F</span><span class="s2">"localhost: "</span> <span class="s1">'{print $2}'</span>
+mysql_secure_installation
+mysql <span class="nt">-uroot</span> <span class="nt">-p</span>
+</code></pre></div></div>
+
+<h3 id="2安装mysql55">2、安装mysql5.5</h3>
+<p>Remine 只支持mysql5.0-5.5，mysql&gt;=5.6 有问题，详见官方说明https://www.redmine.org/projects/redmine/wiki/RedmineInstall/
+ 使用中国科技大学镜像源：https://mirrors.ustc.edu.cn/mysql-ftp/Downloads</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> wget https://mirrors.ustc.edu.cn/mysql-ftp/Downloads/MySQL-5.5/MySQL-5.5.55-1.el6.x86_64.rpm-bundle.tar
+ <span class="nb">tar </span>xf MySQL<span class="k">*</span>
+ rpm <span class="nt">-ivh</span> MySQL<span class="k">*</span>.rpm
+ chkconfig mysqld on
+ service mysqld start
+ mysql_secure_installation
+</code></pre></div></div>
+
+<h3 id="3-报错问题">3. 报错问题</h3>
+<h4 id="1无法连接到服务器table-performance_schemasession_variables-doesnt-exist">1、无法连接到服务器：Table ‘performance_schema.session_variables’ doesn’t exist</h4>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#先在配置文件开启performance_schema</span>
+<span class="o">[</span>mysqld]
+<span class="nv">performance_schema</span><span class="o">=</span>ON
+
+<span class="c">#再登录mysql更新库表：</span>
+mysql_upgrade <span class="nt">-u</span> root <span class="nt">-p</span> <span class="nt">--force</span>
+</code></pre></div></div>
+<p>https://stackoverflow.com/questions/36746677/table-performance-schema-session-variables-doesnt-exist
+https://dev.mysql.com/doc/refman/5.7/en/performance-schema-quick-start.html</p>
+
+<h4 id="2fatal-error-mysqluser-table-is-damaged-please-run-mysql_upgrade">2、Fatal error: mysql.user table is damaged. Please run mysql_upgrade</h4>
+
+<p>执行时 <code class="highlighter-rouge">mysql_upgrade -u root -p --force</code> 却提示因<code class="highlighter-rouge">mysqld</code>没有启动而无法连接到mysql，岂不是进入了死局？</p>
+
+<p>还好stackoverflow 找到了答案:先跳过授权启动mysqld：<br />
+<code class="highlighter-rouge">mysqld --skip-grant-tables</code></p>
+
+<p>如果依然提示 
+<code class="highlighter-rouge">mysql_upgrade: Got error: 2002: Can't connect to local MySQL server through socket '/var/lib/mysql/mysql.sock'</code></p>
+
+<p>需要修改配置文件，指定mysql的进程位置：</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>client]
+<span class="nv">socket</span><span class="o">=</span>/data/mysql/mysql.sock
+</code></pre></div></div>
+
+<p>然后新开一个克隆窗口，执行</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysql_upgrade <span class="nt">-u</span> root <span class="nt">-p</span> 
+</code></pre></div></div>
+<p>完成后就可以了正常启动mysqld 了，最后<code class="highlighter-rouge">pkill mysqld</code> ，使用正常方式启动：</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>service mysqld start 
+</code></pre></div></div>
+
+<blockquote>
+  <p>https://stackoverflow.com/questions/36156475/mysqld-doesnt-start-after-brew-upgrade-from-5-6-to-5-7
+https://serverfault.com/questions/527422/mysql-upgrade-is-failing-with-no-real-reason-given</p>
+</blockquote>
+
+<h4 id="31-of-order-by-clause-is-not-in-group-by-clause-and-contains-nonaggregated-column">3、1 of ORDER BY clause is not in GROUP BY clause and contains nonaggregated column</h4>
+<p>==’information_schema.PROFILING.SEQ’ which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by==</p>
+
+<p><code class="highlighter-rouge">vim /etc/my.cnf</code></p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">sql_mode</span><span class="o">=</span><span class="s2">""</span>
+</code></pre></div></div>
+
+<h4 id="4忘记root密码">4、忘记root密码</h4>
+<p>使用非root用户启动mysqld
+在配置文件中添加</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>mysqld]
+<span class="nv">user</span><span class="o">=</span>mysql
+</code></pre></div></div>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>update mysql.user <span class="nb">set </span><span class="nv">authentication_string</span><span class="o">=</span>password<span class="o">(</span><span class="s1">'123456'</span><span class="o">)</span> where <span class="nv">user</span><span class="o">=</span><span class="s1">'root'</span> and Host <span class="o">=</span><span class="s1">'localhost'</span><span class="p">;</span>
+</code></pre></div></div>
+<blockquote>
+  <p>http://blog.csdn.net/xinliuqianxue/article/details/52156568</p>
+</blockquote>
+
+<h4 id="5you-must-reset-your-password-using-alter-user-statement-before-executing-this-statement">5、You must reset your password using ALTER USER statement before executing this statement.</h4>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SET PASSWORD <span class="o">=</span> PASSWORD<span class="o">(</span><span class="s1">'xxxxxx#345'</span><span class="o">)</span><span class="p">;</span>
+ALTER USER root@<span class="s1">'localhost'</span> PASSWORD EXPIRE NEVER<span class="p">;</span>
+flush privileges<span class="p">;</span>
+</code></pre></div></div>
+<h4 id="6error-fatal-error-please-read-security-section-of-the-manual-to-find-out-how-to-run-mysqld-as-root">6、[ERROR] Fatal error: Please read “Security” section of the manual to find out how to run mysqld as root!</h4>
+
+<p>在my.cnf文件中，指定<code class="highlighter-rouge">user=mysql</code>;</p>
+
+<h4 id="7erroe-initialize-specified-but-the-data-directory-has-files-in-it">7、ERROE –initialize specified but the data directory has files in it</h4>
+
+<p>每次重启都会提示，数据已经存在了，但是我的进程并没有启动，而且手动删除了 <code class="highlighter-rouge">/var/lib/mysql</code> 下的数据，这是为什么呢？</p>
+
+<p><code class="highlighter-rouge">systemctl status mysqld.service</code> 显示服务启动失败，并且有上面的提示；</p>
+
+<p><code class="highlighter-rouge">tail -f /var/log/mysqld.log</code> 发现不断在刷日志；</p>
+
+<p><code class="highlighter-rouge">ps -ef | grep mysql</code> 竟然有进程存在，见鬼了。</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root@izm5eg3yspb12eu8z0ocfsz ~]# ps -ef | grep mysql
+mysql    15669     1  0 11:50 ?        00:00:00 /usr/sbin/mysqld --daemonize --pid-file=/var/run/mysqld/mysqld.pid
+mysql    15672     1  0 11:50 ?        00:00:00 /usr/sbin/mysqld --daemonize --pid-file=/var/run/mysqld/mysqld.pid
+root     15687  1260  0 11:50 pts/1    00:00:00 grep --color=auto mysql
+</code></pre></div></div>
+
+<h3 id="参考文档">参考文档</h3>
+
+<blockquote>
+  <p>http://www.tecmint.com/install-latest-mysql-on-rhel-centos-and-fedora/
+https://www.digitalocean.com/community/tutorials/how-to-install-mysql-on-centos-7</p>
+</blockquote>
+
+
+
+
+
+<ul class="taxonomy__index">
+  
+    
+      
+        <li>
+          <a href="#secret">
+            <strong>secret</strong> <span class="taxonomy__count">2</span>
+          </a>
+        </li>
+      
+    
+      
+        <li>
+          <a href="#configmap">
+            <strong>configMap</strong> <span class="taxonomy__count">2</span>
+          </a>
+        </li>
+      
+    
+      
+        <li>
+          <a href="#binary">
+            <strong>binary</strong> <span class="taxonomy__count">2</span>
+          </a>
+        </li>
+      
+    
+      
+        <li>
+          <a href="#openstack">
+            <strong>openstack</strong> <span class="taxonomy__count">2</span>
+          </a>
+        </li>
+      
+    
+      
+    
+      
+        <li>
+          <a href="#mysql">
+            <strong>mysql</strong> <span class="taxonomy__count">2</span>
+          </a>
+        </li>
+      
+    
+      
+        <li>
+          <a href="#centos-7-x">
+            <strong>centos 7.x</strong> <span class="taxonomy__count">2</span>
+          </a>
+        </li>
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        <li>
+          <a href="#zombie">
+            <strong>zombie</strong> <span class="taxonomy__count">1</span>
+          </a>
+        </li>
+      
+    
+      
+    
+      
+    
+      
+        <li>
+          <a href="#rvm">
+            <strong>rvm</strong> <span class="taxonomy__count">1</span>
+          </a>
+        </li>
+      
+    
+      
+        <li>
+          <a href="#ruby">
+            <strong>ruby</strong> <span class="taxonomy__count">1</span>
+          </a>
+        </li>
+      
+    
+      
+        <li>
+          <a href="#jekyll">
+            <strong>jekyll</strong> <span class="taxonomy__count">1</span>
+          </a>
+        </li>
+      
+    
+      
+        <li>
+          <a href="#minimal-mistakes">
+            <strong>minimal-mistakes</strong> <span class="taxonomy__count">1</span>
+          </a>
+        </li>
+      
+    
+      
+        <li>
+          <a href="#init">
+            <strong>init</strong> <span class="taxonomy__count">1</span>
+          </a>
+        </li>
+      
+    
+      
+        <li>
+          <a href="#java">
+            <strong>java</strong> <span class="taxonomy__count">1</span>
+          </a>
+        </li>
+      
+    
+      
+        <li>
+          <a href="#tomcat">
+            <strong>tomcat</strong> <span class="taxonomy__count">1</span>
+          </a>
+        </li>
+      
+    
+      
+        <li>
+          <a href="#centos-6-x">
+            <strong>centos 6.x</strong> <span class="taxonomy__count">1</span>
+          </a>
+        </li>
+      
+    
+      
+        <li>
+          <a href="#ocata">
+            <strong>ocata</strong> <span class="taxonomy__count">1</span>
+          </a>
+        </li>
+      
+    
+      
+        <li>
+          <a href="#queens">
+            <strong>queens</strong> <span class="taxonomy__count">1</span>
+          </a>
+        </li>
+      
+    
+      
+        <li>
+          <a href="#evacuate">
+            <strong>evacuate</strong> <span class="taxonomy__count">1</span>
+          </a>
+        </li>
+      
+    
+      
+        <li>
+          <a href="#migrate">
+            <strong>migrate</strong> <span class="taxonomy__count">1</span>
+          </a>
+        </li>
+      
+    
+  
+</ul>
+
+
+  
+    
+      <section id="secret" class="taxonomy__section">
+        <h2 class="archive__subtitle">secret</h2>
+        <div class="entries-list">
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/databases/how-to-install-mysql57-on-centos7x" rel="permalink">如何在 CentOS 7.x 上安装 MySQL 5.7
+</a>
+      
+    </h2>
+
+    <!-- dvhart: date read-time meta line -->
+    <p class="page__meta">
+      
+        <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2018-07-28">July 28, 2018</time>&emsp;
+      
+      <i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;
+
+
+
+
+  1 minute read
+
+    </p>
+    <!-- end dvhart date read-time meta line -->
+
+    <p class="archive__item-excerpt" itemprop="description">如何在 CentOS 7.x 上安装 MySQL 5.7
+</p>
+  </article>
+</div>
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/kubernetes/mount-binary-files-into-pods-using-secret-and-configmap" rel="permalink">使用 secret 和 configmap 将二进制文件挂载到容器内
+</a>
+      
+    </h2>
+
+    <!-- dvhart: date read-time meta line -->
+    <p class="page__meta">
+      
+        <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2018-07-28">July 28, 2018</time>&emsp;
+      
+      <i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;
+
+
+
+
+  1 minute read
+
+    </p>
+    <!-- end dvhart date read-time meta line -->
+
+    <p class="archive__item-excerpt" itemprop="description">如何使用 secret 和 configmap 将二进制文件挂载到 pod 内
+</p>
+  </article>
+</div>
+          
+        </div>
+        <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+      </section>
+    
+  
+    
+      <section id="configmap" class="taxonomy__section">
+        <h2 class="archive__subtitle">configMap</h2>
+        <div class="entries-list">
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/databases/how-to-install-mysql57-on-centos7x" rel="permalink">如何在 CentOS 7.x 上安装 MySQL 5.7
+</a>
+      
+    </h2>
+
+    <!-- dvhart: date read-time meta line -->
+    <p class="page__meta">
+      
+        <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2018-07-28">July 28, 2018</time>&emsp;
+      
+      <i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;
+
+
+
+
+  1 minute read
+
+    </p>
+    <!-- end dvhart date read-time meta line -->
+
+    <p class="archive__item-excerpt" itemprop="description">如何在 CentOS 7.x 上安装 MySQL 5.7
+</p>
+  </article>
+</div>
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/kubernetes/mount-binary-files-into-pods-using-secret-and-configmap" rel="permalink">使用 secret 和 configmap 将二进制文件挂载到容器内
+</a>
+      
+    </h2>
+
+    <!-- dvhart: date read-time meta line -->
+    <p class="page__meta">
+      
+        <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2018-07-28">July 28, 2018</time>&emsp;
+      
+      <i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;
+
+
+
+
+  1 minute read
+
+    </p>
+    <!-- end dvhart date read-time meta line -->
+
+    <p class="archive__item-excerpt" itemprop="description">如何使用 secret 和 configmap 将二进制文件挂载到 pod 内
+</p>
+  </article>
+</div>
+          
+        </div>
+        <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+      </section>
+    
+  
+    
+      <section id="binary" class="taxonomy__section">
+        <h2 class="archive__subtitle">binary</h2>
+        <div class="entries-list">
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/databases/how-to-install-mysql57-on-centos7x" rel="permalink">如何在 CentOS 7.x 上安装 MySQL 5.7
+</a>
+      
+    </h2>
+
+    <!-- dvhart: date read-time meta line -->
+    <p class="page__meta">
+      
+        <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2018-07-28">July 28, 2018</time>&emsp;
+      
+      <i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;
+
+
+
+
+  1 minute read
+
+    </p>
+    <!-- end dvhart date read-time meta line -->
+
+    <p class="archive__item-excerpt" itemprop="description">如何在 CentOS 7.x 上安装 MySQL 5.7
+</p>
+  </article>
+</div>
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/kubernetes/mount-binary-files-into-pods-using-secret-and-configmap" rel="permalink">使用 secret 和 configmap 将二进制文件挂载到容器内
+</a>
+      
+    </h2>
+
+    <!-- dvhart: date read-time meta line -->
+    <p class="page__meta">
+      
+        <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2018-07-28">July 28, 2018</time>&emsp;
+      
+      <i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;
+
+
+
+
+  1 minute read
+
+    </p>
+    <!-- end dvhart date read-time meta line -->
+
+    <p class="archive__item-excerpt" itemprop="description">如何使用 secret 和 configmap 将二进制文件挂载到 pod 内
+</p>
+  </article>
+</div>
+          
+        </div>
+        <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+      </section>
+    
+  
+    
+      <section id="openstack" class="taxonomy__section">
+        <h2 class="archive__subtitle">openstack</h2>
+        <div class="entries-list">
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/openstack/evacuate-instances-on-openstack-ocata-and-queens" rel="permalink">在 OpenStack Ocata/Queens 上一键完成实例疏散
+</a>
+      
+    </h2>
+
+    <!-- dvhart: date read-time meta line -->
+    <p class="page__meta">
+      
+        <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2018-08-23">August 23, 2018</time>&emsp;
+      
+      <i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;
+
+
+
+
+  less than 1 minute read
+
+    </p>
+    <!-- end dvhart date read-time meta line -->
+
+    <p class="archive__item-excerpt" itemprop="description">当物理服务器宕机又无法正常开机，我们就需要将原来运行在这台服务器上的虚拟机，快速迁移到其它正常的物理服务器上，迅速恢复服务，实现服务的高可用。
+</p>
+  </article>
+</div>
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/openstack/delete-zombie-instances-completly" rel="permalink">如何从 OpenStack 中彻底删除僵尸实例
+</a>
+      
+    </h2>
+
+    <!-- dvhart: date read-time meta line -->
+    <p class="page__meta">
+      
+        <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2018-08-01">August 01, 2018</time>&emsp;
+      
+      <i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;
+
+
+
+
+  2 minute read
+
+    </p>
+    <!-- end dvhart date read-time meta line -->
+
+    <p class="archive__item-excerpt" itemprop="description">在使用运维 OpenStack 的过程中，我们可能会遇到系统错误引起实例删除失败。通常是 Dashboard 上显示实例已经不存在了，但 MySQL 数据库中还有很多冗余的信息。
+</p>
+  </article>
+</div>
+          
+        </div>
+        <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+      </section>
+    
+  
+    
+  
+    
+      <section id="mysql" class="taxonomy__section">
+        <h2 class="archive__subtitle">mysql</h2>
+        <div class="entries-list">
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/systems/install-java7-tomcat7-mysql55-on-centos6" rel="permalink">如何在 CentOS 6.x 上安装 Java7 Tomcat7 MySQL5.5
+</a>
+      
+    </h2>
+
+    <!-- dvhart: date read-time meta line -->
+    <p class="page__meta">
+      
+        <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2018-08-13">August 13, 2018</time>&emsp;
+      
+      <i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;
+
+
+
+
+  less than 1 minute read
+
+    </p>
+    <!-- end dvhart date read-time meta line -->
+
+    <p class="archive__item-excerpt" itemprop="description">在 CentOS 6.x 上快速安装 Java7、Tomcat7 和 MySQL5.5 服务。
+</p>
+  </article>
+</div>
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/openstack/delete-zombie-instances-completly" rel="permalink">如何从 OpenStack 中彻底删除僵尸实例
+</a>
+      
+    </h2>
+
+    <!-- dvhart: date read-time meta line -->
+    <p class="page__meta">
+      
+        <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2018-08-01">August 01, 2018</time>&emsp;
+      
+      <i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;
+
+
+
+
+  2 minute read
+
+    </p>
+    <!-- end dvhart date read-time meta line -->
+
+    <p class="archive__item-excerpt" itemprop="description">在使用运维 OpenStack 的过程中，我们可能会遇到系统错误引起实例删除失败。通常是 Dashboard 上显示实例已经不存在了，但 MySQL 数据库中还有很多冗余的信息。
+</p>
+  </article>
+</div>
+          
+        </div>
+        <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+      </section>
+    
+  
+    
+      <section id="centos-7-x" class="taxonomy__section">
+        <h2 class="archive__subtitle">centos 7.x</h2>
+        <div class="entries-list">
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/systems/centos7-system-init" rel="permalink">CentOS 7.x 系统初始化配置
+</a>
+      
+    </h2>
+
+    <!-- dvhart: date read-time meta line -->
+    <p class="page__meta">
+      
+        <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2018-08-05">August 05, 2018</time>&emsp;
+      
+      <i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;
+
+
+
+
+  less than 1 minute read
+
+    </p>
+    <!-- end dvhart date read-time meta line -->
+
+    <p class="archive__item-excerpt" itemprop="description">CentOS 7.x 系统初始化配置，适用于常规用途或用于制作 vmware/openstack 的模版镜像。
+</p>
+  </article>
+</div>
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/systems/install-jekyll-minimal-mistakes-using-ruby-managed-by-rvm" rel="permalink">在 CentOS7 上使用 rvm 安装 ruby 并配置 Jeykll 使用 minimal-mistakes 主题
+</a>
+      
+    </h2>
+
+    <!-- dvhart: date read-time meta line -->
+    <p class="page__meta">
+      
+        <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2018-08-02">August 02, 2018</time>&emsp;
+      
+      <i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;
+
+
+
+
+  1 minute read
+
+    </p>
+    <!-- end dvhart date read-time meta line -->
+
+    <p class="archive__item-excerpt" itemprop="description">在 CentOS7 上使用 rvm 安装 ruby 并配置 Jeykll 使用 minimal-mistakes 主题
+</p>
+  </article>
+</div>
+          
+        </div>
+        <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+      </section>
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      <section id="zombie" class="taxonomy__section">
+        <h2 class="archive__subtitle">zombie</h2>
+        <div class="entries-list">
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/openstack/delete-zombie-instances-completly" rel="permalink">如何从 OpenStack 中彻底删除僵尸实例
+</a>
+      
+    </h2>
+
+    <!-- dvhart: date read-time meta line -->
+    <p class="page__meta">
+      
+        <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2018-08-01">August 01, 2018</time>&emsp;
+      
+      <i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;
+
+
+
+
+  2 minute read
+
+    </p>
+    <!-- end dvhart date read-time meta line -->
+
+    <p class="archive__item-excerpt" itemprop="description">在使用运维 OpenStack 的过程中，我们可能会遇到系统错误引起实例删除失败。通常是 Dashboard 上显示实例已经不存在了，但 MySQL 数据库中还有很多冗余的信息。
+</p>
+  </article>
+</div>
+          
+        </div>
+        <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+      </section>
+    
+  
+    
+  
+    
+  
+    
+      <section id="rvm" class="taxonomy__section">
+        <h2 class="archive__subtitle">rvm</h2>
+        <div class="entries-list">
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/systems/install-jekyll-minimal-mistakes-using-ruby-managed-by-rvm" rel="permalink">在 CentOS7 上使用 rvm 安装 ruby 并配置 Jeykll 使用 minimal-mistakes 主题
+</a>
+      
+    </h2>
+
+    <!-- dvhart: date read-time meta line -->
+    <p class="page__meta">
+      
+        <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2018-08-02">August 02, 2018</time>&emsp;
+      
+      <i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;
+
+
+
+
+  1 minute read
+
+    </p>
+    <!-- end dvhart date read-time meta line -->
+
+    <p class="archive__item-excerpt" itemprop="description">在 CentOS7 上使用 rvm 安装 ruby 并配置 Jeykll 使用 minimal-mistakes 主题
+</p>
+  </article>
+</div>
+          
+        </div>
+        <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+      </section>
+    
+  
+    
+      <section id="ruby" class="taxonomy__section">
+        <h2 class="archive__subtitle">ruby</h2>
+        <div class="entries-list">
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/systems/install-jekyll-minimal-mistakes-using-ruby-managed-by-rvm" rel="permalink">在 CentOS7 上使用 rvm 安装 ruby 并配置 Jeykll 使用 minimal-mistakes 主题
+</a>
+      
+    </h2>
+
+    <!-- dvhart: date read-time meta line -->
+    <p class="page__meta">
+      
+        <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2018-08-02">August 02, 2018</time>&emsp;
+      
+      <i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;
+
+
+
+
+  1 minute read
+
+    </p>
+    <!-- end dvhart date read-time meta line -->
+
+    <p class="archive__item-excerpt" itemprop="description">在 CentOS7 上使用 rvm 安装 ruby 并配置 Jeykll 使用 minimal-mistakes 主题
+</p>
+  </article>
+</div>
+          
+        </div>
+        <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+      </section>
+    
+  
+    
+      <section id="jekyll" class="taxonomy__section">
+        <h2 class="archive__subtitle">jekyll</h2>
+        <div class="entries-list">
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/systems/install-jekyll-minimal-mistakes-using-ruby-managed-by-rvm" rel="permalink">在 CentOS7 上使用 rvm 安装 ruby 并配置 Jeykll 使用 minimal-mistakes 主题
+</a>
+      
+    </h2>
+
+    <!-- dvhart: date read-time meta line -->
+    <p class="page__meta">
+      
+        <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2018-08-02">August 02, 2018</time>&emsp;
+      
+      <i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;
+
+
+
+
+  1 minute read
+
+    </p>
+    <!-- end dvhart date read-time meta line -->
+
+    <p class="archive__item-excerpt" itemprop="description">在 CentOS7 上使用 rvm 安装 ruby 并配置 Jeykll 使用 minimal-mistakes 主题
+</p>
+  </article>
+</div>
+          
+        </div>
+        <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+      </section>
+    
+  
+    
+      <section id="minimal-mistakes" class="taxonomy__section">
+        <h2 class="archive__subtitle">minimal-mistakes</h2>
+        <div class="entries-list">
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/systems/install-jekyll-minimal-mistakes-using-ruby-managed-by-rvm" rel="permalink">在 CentOS7 上使用 rvm 安装 ruby 并配置 Jeykll 使用 minimal-mistakes 主题
+</a>
+      
+    </h2>
+
+    <!-- dvhart: date read-time meta line -->
+    <p class="page__meta">
+      
+        <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2018-08-02">August 02, 2018</time>&emsp;
+      
+      <i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;
+
+
+
+
+  1 minute read
+
+    </p>
+    <!-- end dvhart date read-time meta line -->
+
+    <p class="archive__item-excerpt" itemprop="description">在 CentOS7 上使用 rvm 安装 ruby 并配置 Jeykll 使用 minimal-mistakes 主题
+</p>
+  </article>
+</div>
+          
+        </div>
+        <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+      </section>
+    
+  
+    
+      <section id="init" class="taxonomy__section">
+        <h2 class="archive__subtitle">init</h2>
+        <div class="entries-list">
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/systems/centos7-system-init" rel="permalink">CentOS 7.x 系统初始化配置
+</a>
+      
+    </h2>
+
+    <!-- dvhart: date read-time meta line -->
+    <p class="page__meta">
+      
+        <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2018-08-05">August 05, 2018</time>&emsp;
+      
+      <i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;
+
+
+
+
+  less than 1 minute read
+
+    </p>
+    <!-- end dvhart date read-time meta line -->
+
+    <p class="archive__item-excerpt" itemprop="description">CentOS 7.x 系统初始化配置，适用于常规用途或用于制作 vmware/openstack 的模版镜像。
+</p>
+  </article>
+</div>
+          
+        </div>
+        <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+      </section>
+    
+  
+    
+      <section id="java" class="taxonomy__section">
+        <h2 class="archive__subtitle">java</h2>
+        <div class="entries-list">
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/systems/install-java7-tomcat7-mysql55-on-centos6" rel="permalink">如何在 CentOS 6.x 上安装 Java7 Tomcat7 MySQL5.5
+</a>
+      
+    </h2>
+
+    <!-- dvhart: date read-time meta line -->
+    <p class="page__meta">
+      
+        <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2018-08-13">August 13, 2018</time>&emsp;
+      
+      <i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;
+
+
+
+
+  less than 1 minute read
+
+    </p>
+    <!-- end dvhart date read-time meta line -->
+
+    <p class="archive__item-excerpt" itemprop="description">在 CentOS 6.x 上快速安装 Java7、Tomcat7 和 MySQL5.5 服务。
+</p>
+  </article>
+</div>
+          
+        </div>
+        <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+      </section>
+    
+  
+    
+      <section id="tomcat" class="taxonomy__section">
+        <h2 class="archive__subtitle">tomcat</h2>
+        <div class="entries-list">
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/systems/install-java7-tomcat7-mysql55-on-centos6" rel="permalink">如何在 CentOS 6.x 上安装 Java7 Tomcat7 MySQL5.5
+</a>
+      
+    </h2>
+
+    <!-- dvhart: date read-time meta line -->
+    <p class="page__meta">
+      
+        <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2018-08-13">August 13, 2018</time>&emsp;
+      
+      <i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;
+
+
+
+
+  less than 1 minute read
+
+    </p>
+    <!-- end dvhart date read-time meta line -->
+
+    <p class="archive__item-excerpt" itemprop="description">在 CentOS 6.x 上快速安装 Java7、Tomcat7 和 MySQL5.5 服务。
+</p>
+  </article>
+</div>
+          
+        </div>
+        <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+      </section>
+    
+  
+    
+      <section id="centos-6-x" class="taxonomy__section">
+        <h2 class="archive__subtitle">centos 6.x</h2>
+        <div class="entries-list">
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/systems/install-java7-tomcat7-mysql55-on-centos6" rel="permalink">如何在 CentOS 6.x 上安装 Java7 Tomcat7 MySQL5.5
+</a>
+      
+    </h2>
+
+    <!-- dvhart: date read-time meta line -->
+    <p class="page__meta">
+      
+        <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2018-08-13">August 13, 2018</time>&emsp;
+      
+      <i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;
+
+
+
+
+  less than 1 minute read
+
+    </p>
+    <!-- end dvhart date read-time meta line -->
+
+    <p class="archive__item-excerpt" itemprop="description">在 CentOS 6.x 上快速安装 Java7、Tomcat7 和 MySQL5.5 服务。
+</p>
+  </article>
+</div>
+          
+        </div>
+        <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+      </section>
+    
+  
+    
+      <section id="ocata" class="taxonomy__section">
+        <h2 class="archive__subtitle">ocata</h2>
+        <div class="entries-list">
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/openstack/evacuate-instances-on-openstack-ocata-and-queens" rel="permalink">在 OpenStack Ocata/Queens 上一键完成实例疏散
+</a>
+      
+    </h2>
+
+    <!-- dvhart: date read-time meta line -->
+    <p class="page__meta">
+      
+        <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2018-08-23">August 23, 2018</time>&emsp;
+      
+      <i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;
+
+
+
+
+  less than 1 minute read
+
+    </p>
+    <!-- end dvhart date read-time meta line -->
+
+    <p class="archive__item-excerpt" itemprop="description">当物理服务器宕机又无法正常开机，我们就需要将原来运行在这台服务器上的虚拟机，快速迁移到其它正常的物理服务器上，迅速恢复服务，实现服务的高可用。
+</p>
+  </article>
+</div>
+          
+        </div>
+        <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+      </section>
+    
+  
+    
+      <section id="queens" class="taxonomy__section">
+        <h2 class="archive__subtitle">queens</h2>
+        <div class="entries-list">
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/openstack/evacuate-instances-on-openstack-ocata-and-queens" rel="permalink">在 OpenStack Ocata/Queens 上一键完成实例疏散
+</a>
+      
+    </h2>
+
+    <!-- dvhart: date read-time meta line -->
+    <p class="page__meta">
+      
+        <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2018-08-23">August 23, 2018</time>&emsp;
+      
+      <i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;
+
+
+
+
+  less than 1 minute read
+
+    </p>
+    <!-- end dvhart date read-time meta line -->
+
+    <p class="archive__item-excerpt" itemprop="description">当物理服务器宕机又无法正常开机，我们就需要将原来运行在这台服务器上的虚拟机，快速迁移到其它正常的物理服务器上，迅速恢复服务，实现服务的高可用。
+</p>
+  </article>
+</div>
+          
+        </div>
+        <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+      </section>
+    
+  
+    
+      <section id="evacuate" class="taxonomy__section">
+        <h2 class="archive__subtitle">evacuate</h2>
+        <div class="entries-list">
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/openstack/evacuate-instances-on-openstack-ocata-and-queens" rel="permalink">在 OpenStack Ocata/Queens 上一键完成实例疏散
+</a>
+      
+    </h2>
+
+    <!-- dvhart: date read-time meta line -->
+    <p class="page__meta">
+      
+        <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2018-08-23">August 23, 2018</time>&emsp;
+      
+      <i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;
+
+
+
+
+  less than 1 minute read
+
+    </p>
+    <!-- end dvhart date read-time meta line -->
+
+    <p class="archive__item-excerpt" itemprop="description">当物理服务器宕机又无法正常开机，我们就需要将原来运行在这台服务器上的虚拟机，快速迁移到其它正常的物理服务器上，迅速恢复服务，实现服务的高可用。
+</p>
+  </article>
+</div>
+          
+        </div>
+        <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+      </section>
+    
+  
+    
+      <section id="migrate" class="taxonomy__section">
+        <h2 class="archive__subtitle">migrate</h2>
+        <div class="entries-list">
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/openstack/evacuate-instances-on-openstack-ocata-and-queens" rel="permalink">在 OpenStack Ocata/Queens 上一键完成实例疏散
+</a>
+      
+    </h2>
+
+    <!-- dvhart: date read-time meta line -->
+    <p class="page__meta">
+      
+        <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2018-08-23">August 23, 2018</time>&emsp;
+      
+      <i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;
+
+
+
+
+  less than 1 minute read
+
+    </p>
+    <!-- end dvhart date read-time meta line -->
+
+    <p class="archive__item-excerpt" itemprop="description">当物理服务器宕机又无法正常开机，我们就需要将原来运行在这台服务器上的虚拟机，快速迁移到其它正常的物理服务器上，迅速恢复服务，实现服务的高可用。
+</p>
+  </article>
+</div>
+          
+        </div>
+        <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+      </section>
+    
+  
+
+
+  </div>
+</div>
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><input type="text" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+    <div id="results" class="results"></div></div>
+      </div>
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+    
+    
+    
+      <li><a href="https://github.com/ykfq"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+    
+    
+    
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2018 NOZUONOHIGH. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script src="https://use.fontawesome.com/releases/v5.1.0/js/all.js"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+    
+  
+
+
+
+  </body>
+</html>
