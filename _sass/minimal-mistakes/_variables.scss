@@ -37,9 +37,9 @@ $caption-font-family: $serif !default;
 $type-size-1: 2.441em !default; // ~39.056px
 $type-size-2: 1.953em !default; // ~31.248px
 $type-size-3: 1.563em !default; // ~25.008px
-$type-size-4: 1.250em !default; // ~20px
-$type-size-5: 1.000em !default; // ~16px
-$type-size-6: 0.750em !default; // ~12px
+$type-size-4: 1.25em !default; // ~20px
+$type-size-5: 1em !default; // ~16px
+$type-size-6: 0.75em !default; // ~12px
 $type-size-7: 0.6875em !default; // ~11px
 $type-size-8: 0.625em !default; // ~10px
 
@@ -87,7 +87,9 @@ $google-plus-color: #dd4b39 !default;
 $instagram-color: #517fa4 !default;
 $lastfm-color: #d51007 !default;
 $linkedin-color: #007bb6 !default;
+$mastodon-color: #2b90d9 !default;
 $pinterest-color: #cb2027 !default;
+$reddit-color: #ff4500 !default;
 $rss-color: #fa9b39 !default;
 $soundcloud-color: #ff3300 !default;
 $stackoverflow-color: #fe7a15 !default;
@@ -130,17 +132,17 @@ $base0f: #ff5370 !default;
 
 $small: 600px !default;
 $medium: 768px !default;
-$medium-wide: 1024px !default;
-$large: 1200px !default;
-$x-large: 1366px !default;
+$medium-wide: 900px !default;
+$large: 1024px !default;
+$x-large: 1280px !default;
 
 /*
    Grid
    ========================================================================== */
 
-$right-sidebar-width-narrow: 220px !default;
-$right-sidebar-width: 260px !default;
-$right-sidebar-width-wide: 300px !default;
+$right-sidebar-width-narrow: 200px !default;
+$right-sidebar-width: 300px !default;
+$right-sidebar-width-wide: 400px !default;
 
 /*
    Other
@@ -148,6 +150,8 @@ $right-sidebar-width-wide: 300px !default;
 
 $border-radius: 4px !default;
 $box-shadow: 0 1px 1px rgba(0, 0, 0, 0.125) !default;
+$nav-height: 2em !default;
+$nav-toggle-height: 2rem !default;
 $navicon-width: 1.5rem !default;
 $navicon-height: 0.25rem !default;
 $global-transition: all 0.2s ease-in-out !default;
