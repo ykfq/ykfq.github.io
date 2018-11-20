@@ -1,4 +1,70 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.3">Jekyll</generator><link href="http://192.168.100.100:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://192.168.100.100:4000/" rel="alternate" type="text/html" /><updated>2018-09-12T06:01:06+08:00</updated><id>http://192.168.100.100:4000/</id><title type="html">美景定当不负</title><subtitle>An amazing website.</subtitle><author><name>NOZUONOHIGH</name></author><entry><title type="html">在 OpenStack Ocata/Queens 上一键完成实例疏散</title><link href="http://192.168.100.100:4000/openstack/evacuate-instances-on-openstack-ocata-and-queens" rel="alternate" type="text/html" title="在 OpenStack Ocata/Queens 上一键完成实例疏散" /><published>2018-08-23T00:00:00+08:00</published><updated>2018-08-23T00:00:00+08:00</updated><id>http://192.168.100.100:4000/openstack/evacuate-instances-on-openstack-ocata-and-queens</id><content type="html" xml:base="http://192.168.100.100:4000/openstack/evacuate-instances-on-openstack-ocata-and-queens">&lt;h3 id=&quot;概念梳理&quot;&gt;概念梳理&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://172.17.10.122:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://172.17.10.122:4000/" rel="alternate" type="text/html" /><updated>2018-11-20T15:31:22+08:00</updated><id>http://172.17.10.122:4000/feed.xml</id><title type="html">美景定当不负</title><subtitle>An amazing website.</subtitle><author><name>NOZUONOHIGH</name></author><entry><title type="html">3步修改 CentOS7 网卡名为 eth0</title><link href="http://172.17.10.122:4000/systems/change-centos7-ifcfg-name-in-three-steps" rel="alternate" type="text/html" title="3步修改 CentOS7 网卡名为 eth0" /><published>2018-11-18T00:00:00+08:00</published><updated>2018-11-18T00:00:00+08:00</updated><id>http://172.17.10.122:4000/systems/change-centos7-ifcfg-name-in-three-steps</id><content type="html" xml:base="http://172.17.10.122:4000/systems/change-centos7-ifcfg-name-in-three-steps">&lt;p&gt;使用简单的3步，将 CentOS7 网卡名由 ensxx 修改为 eth0。&lt;/p&gt;
+
+&lt;h3 id=&quot;1修改网卡配置文件&quot;&gt;1、修改网卡配置文件&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;更改 ifcfg 文件名
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; /etc/sysconfig/network-scripts/ifcfg-ens&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; | xargs &lt;span class=&quot;nt&quot;&gt;-I&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'{}'&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;mv&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'{}'&lt;/span&gt; /etc/sysconfig/network-scripts/ifcfg-eth0
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+    &lt;p&gt;其实这一步不是必须的，直接执行下一步创建一个新文件也可以。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;配置IP地址
+修改 NAME 和 DEVICE 的值为 eth0。可按需配置固定IP。
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; /etc/sysconfig/network-scripts/ifcfg-eth0 &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;EOF&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;
+TYPE=Ethernet
+DEVICE=eth0
+NAME=eth0
+ONBOOT=yes
+BOOTPROTO=dhcp
+PEERDNS=no
+IPV6INIT=no
+&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;EOF
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+
+    &lt;p&gt;这一步完成若，重启网络会失败的，因为网卡和设备名变了。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;2修改内核启动参数&quot;&gt;2、修改内核启动参数&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;修改 grub 文件&lt;/p&gt;
+
+    &lt;p&gt;编辑 &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/default/grub&lt;/code&gt;, 在&lt;code class=&quot;highlighter-rouge&quot;&gt;GRUB_CMDLINE_LINUX&lt;/code&gt;这一行末尾引号内添加&lt;code class=&quot;highlighter-rouge&quot;&gt;net.ifnames=0 biosdevname=0&lt;/code&gt;，如下图：&lt;br /&gt;
+&lt;img src=&quot;https://ws1.sinaimg.cn/large/6ee6fa3egy1fnjphna6luj20ri03w3yp.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 一条命令实现&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sed&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'s/\&amp;lt;quiet\&amp;gt;/&amp;amp; net.ifnames=0 biosdevname=0/'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; /etc/default/grub
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+    &lt;p&gt;以上命令参考: https://www.golinuxhub.com/2017/06/sed-insert-word-after-match-in-middle.html&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;重新生成 GRUB 配置文件&lt;/p&gt;
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;grub2-mkconfig &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; /boot/grub2/grub.cfg
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;3禁用-networkmanager按需使用&quot;&gt;3、禁用 NetworkManager（按需使用）&lt;/h3&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; systemctl disable NetworkManager
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;4重启系统&quot;&gt;4、重启系统&lt;/h3&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;reboot
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;linux中查看网卡mac地址&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ifconfig &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;#其中 HWaddr 字段就是mac地址&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; /sys/class/net/eth0/address &lt;span class=&quot;c&quot;&gt;#查看eth0的mac地址&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; /proc/net/arp &lt;span class=&quot;c&quot;&gt;#查看连接到本机的远端ip的mac地址&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;参考&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;http://www.centoscn.com/CentOS/config/2015/0404/5094.html&lt;br /&gt;
+https://www.thegeekdiary.com/centos-rhel-7-how-to-modify-network-interface-names/&lt;/p&gt;
+&lt;/blockquote&gt;</content><author><name>NOZUONOHIGH</name></author><category term="centos 7.x" /><category term="init" /><category term="grub" /><category term="eth0" /><summary type="html">简单3步，将 CentOS7 网卡名由 ensxx 修改为 eth0。</summary></entry><entry><title type="html">在 OpenStack Ocata/Queens 上一键完成实例疏散</title><link href="http://172.17.10.122:4000/openstack/evacuate-instances-on-openstack-ocata-and-queens" rel="alternate" type="text/html" title="在 OpenStack Ocata/Queens 上一键完成实例疏散" /><published>2018-08-23T00:00:00+08:00</published><updated>2018-08-23T00:00:00+08:00</updated><id>http://172.17.10.122:4000/openstack/evacuate-instances-on-openstack-ocata-and-queens</id><content type="html" xml:base="http://172.17.10.122:4000/openstack/evacuate-instances-on-openstack-ocata-and-queens">&lt;h3 id=&quot;概念梳理&quot;&gt;概念梳理&lt;/h3&gt;
 
 &lt;p&gt;先明确几个概念。&lt;/p&gt;
 
@@ -98,7 +164,7 @@ nova host-evacuate computer01 --target computer02
 
 &lt;blockquote&gt;
   &lt;p&gt;https://docs.openstack.org/nova/queens/admin/node-down.html&lt;/p&gt;
-&lt;/blockquote&gt;</content><author><name>NOZUONOHIGH</name></author><category term="openstack" /><category term="ocata" /><category term="queens" /><category term="evacuate" /><category term="migrate" /><summary type="html">当物理服务器宕机又无法正常开机，我们就需要将原来运行在这台服务器上的虚拟机，快速迁移到其它正常的物理服务器上，迅速恢复服务，实现服务的高可用。</summary></entry><entry><title type="html">如何在 CentOS 6.x 上安装 Java7 Tomcat7 MySQL5.5</title><link href="http://192.168.100.100:4000/systems/install-java7-tomcat7-mysql55-on-centos6" rel="alternate" type="text/html" title="如何在 CentOS 6.x 上安装 Java7 Tomcat7 MySQL5.5" /><published>2018-08-13T00:00:00+08:00</published><updated>2018-08-13T00:00:00+08:00</updated><id>http://192.168.100.100:4000/systems/install-java1.7-tomcat7-mysql5.5-on-centos6</id><content type="html" xml:base="http://192.168.100.100:4000/systems/install-java7-tomcat7-mysql55-on-centos6">&lt;h3 id=&quot;需求收集&quot;&gt;需求收集&lt;/h3&gt;
+&lt;/blockquote&gt;</content><author><name>NOZUONOHIGH</name></author><category term="openstack" /><category term="ocata" /><category term="queens" /><category term="evacuate" /><category term="migrate" /><summary type="html">当物理服务器宕机又无法正常开机，我们就需要将原来运行在这台服务器上的虚拟机，快速迁移到其它正常的物理服务器上，迅速恢复服务，实现服务的高可用。</summary></entry><entry><title type="html">如何在 CentOS 6.x 上安装 Java7 Tomcat7 MySQL5.5</title><link href="http://172.17.10.122:4000/systems/install-java7-tomcat7-mysql55-on-centos6" rel="alternate" type="text/html" title="如何在 CentOS 6.x 上安装 Java7 Tomcat7 MySQL5.5" /><published>2018-08-13T00:00:00+08:00</published><updated>2018-08-13T00:00:00+08:00</updated><id>http://172.17.10.122:4000/systems/install-java1.7-tomcat7-mysql5.5-on-centos6</id><content type="html" xml:base="http://172.17.10.122:4000/systems/install-java7-tomcat7-mysql55-on-centos6">&lt;h3 id=&quot;需求收集&quot;&gt;需求收集&lt;/h3&gt;
 &lt;ul&gt;
   &lt;li&gt;系统环境: &lt;code class=&quot;highlighter-rouge&quot;&gt;CentOS 6.8&lt;/code&gt;&lt;/li&gt;
   &lt;li&gt;硬件配置: &lt;code class=&quot;highlighter-rouge&quot;&gt;2C/4G/60G&lt;/code&gt;&lt;/li&gt;
@@ -190,7 +256,8 @@ wget https://cdn.mysql.com//Downloads/Connector-J/mysql-connector-java-&lt;span 
 &lt;span class=&quot;nb&quot;&gt;ln&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sf&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;JAVA_HOME&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;/mysql-connector-java-&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;MYSQL_CONNECTOR_VERION&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-bin&lt;/span&gt;.jar &lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;JAVA_HOME&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;/mysql-connector-java.jar
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
   &lt;/li&gt;
-&lt;/ul&gt;</content><author><name>NOZUONOHIGH</name></author><category term="java" /><category term="mysql" /><category term="tomcat" /><category term="centos 6.x" /><summary type="html">在 CentOS 6.x 上快速安装 Java7、Tomcat7 和 MySQL5.5 服务。</summary></entry><entry><title type="html">CentOS 7.x 系统初始化配置</title><link href="http://192.168.100.100:4000/systems/centos7-system-init" rel="alternate" type="text/html" title="CentOS 7.x 系统初始化配置" /><published>2018-08-05T00:00:00+08:00</published><updated>2018-08-05T00:00:00+08:00</updated><id>http://192.168.100.100:4000/systems/centos7_minimal_system_init</id><content type="html" xml:base="http://192.168.100.100:4000/systems/centos7-system-init">&lt;p&gt;This is an system init installation of centos 7 for template use.&lt;/p&gt;
+&lt;/ul&gt;</content><author><name>NOZUONOHIGH</name></author><category term="java" /><category term="mysql" /><category term="tomcat" /><category term="centos 6.x" /><summary type="html">在 CentOS 6.x 上快速安装 Java7、Tomcat7 和 MySQL5.5 服务。</summary></entry><entry><title type="html">CentOS 7.x 系统初始化配置</title><link href="http://172.17.10.122:4000/systems/centos7-system-init" rel="alternate" type="text/html" title="CentOS 7.x 系统初始化配置" /><published>2018-08-05T00:00:00+08:00</published><updated>2018-08-05T00:00:00+08:00</updated><id>http://172.17.10.122:4000/systems/centos7_minimal_system_init</id><content type="html" xml:base="http://172.17.10.122:4000/systems/centos7-system-init">&lt;p&gt;This is an system init installation of centos 7 for template use.&lt;/p&gt;
+
 &lt;h3 id=&quot;1-personalization&quot;&gt;1. Personalization&lt;/h3&gt;
 
 &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; /root/.bashrc &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;EOF&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;
@@ -198,6 +265,7 @@ HISTTIMEFORMAT=&quot;%F %T &quot;
 alias ls='ls --color=auto --time-style +&quot;%T %F&quot;'
 alias ll='ls -lh'
 alias vi='vim'
+alias grep='grep --color'
 
 function mkcd
 {
@@ -223,7 +291,7 @@ nameserver 223.5.5.5
 &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Asia/shanghai&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; /etc/timezone &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
 &lt;span class=&quot;nb&quot;&gt;ln&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sf&lt;/span&gt; /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
-&lt;span class=&quot;nb&quot;&gt;sed&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'/SELINUX/ s/enforcing/permissive/g'&lt;/span&gt; /etc/selinux/config
+&lt;span class=&quot;nb&quot;&gt;sed&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'/SELINUX/ s/enforcing/permissive/g'&lt;/span&gt; /etc/selinux/config &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; setenforce 0
 &lt;span class=&quot;nb&quot;&gt;sed&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'s/^#UseDNS yes/UseDNS no/'&lt;/span&gt; /etc/ssh/sshd_config
 &lt;span class=&quot;nb&quot;&gt;sed&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'s/^#PasswordAuthentication no/PasswordAuthentication yes/g'&lt;/span&gt; /etc/ssh/sshd_config
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
@@ -272,9 +340,54 @@ systemctl disable firewalld
 &lt;h3 id=&quot;7-system-tunning&quot;&gt;7. System tunning&lt;/h3&gt;
 
 &lt;p&gt;Coming soon…&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Turn off hugepage &lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;echo &lt;/span&gt;never &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; /sys/kernel/mm/transparent_hugepage/enabled
+&lt;span class=&quot;nb&quot;&gt;echo &lt;/span&gt;never &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; /sys/kernel/mm/transparent_hugepage/defrag
 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>NOZUONOHIGH</name></author><category term="centos 7.x" /><category term="init" /><summary type="html">CentOS 7.x 系统初始化配置，适用于常规用途或用于制作 vmware/openstack 的模版镜像。</summary></entry><entry><title type="html">如何在 CentOS 7.x 上安装 MySQL 5.7</title><link href="http://192.168.100.100:4000/databases/how-to-install-mysql57-on-centos7x" rel="alternate" type="text/html" title="如何在 CentOS 7.x 上安装 MySQL 5.7" /><published>2018-08-04T00:00:00+08:00</published><updated>2018-07-28T00:00:00+08:00</updated><id>http://192.168.100.100:4000/databases/install-mysql5.7-on-centos7.x</id><content type="html" xml:base="http://192.168.100.100:4000/databases/how-to-install-mysql57-on-centos7x">&lt;h3 id=&quot;1-安装mysql57&quot;&gt;1. 安装mysql5.7&lt;/h3&gt;
+&lt;span class=&quot;c&quot;&gt;#  Setting sysctl&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; /etc/sysctl.conf &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;EOF&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;
+
+net.ipv4.ip_forward=1
+net.bridge.bridge-nf-call-iptables=1
+net.bridge.bridge-nf-call-ip6tables=1
+net.ipv4.tcp_max_syn_backlog=65536
+net.core.netdev_max_backlog=32768
+net.core.somaxconn=32768
+net.core.wmem_default=8388608
+net.core.rmem_default=8388608
+net.core.rmem_max=16777216
+net.core.wmem_max=16777216
+net.ipv4.tcp_timestamps=1
+net.ipv4.tcp_synack_retries=2
+net.ipv4.tcp_syn_retries=2
+net.ipv4.tcp_tw_recycle=0
+net.ipv4.tcp_tw_reuse=1
+net.ipv4.tcp_mem=94500000 915000000 927000000
+net.ipv4.tcp_max_orphans=3276800
+net.ipv4.tcp_fin_timeout=30
+net.ipv4.ip_local_port_range=1024 65535
+fs.nr_open=10000000
+fs.file-max=10000000
+kernel.sem=50100 128256000 50100 2560
+kernel.shmmax=68719476736
+kernel.shmall=68719476736
+vm.overcommit_memory=1
+vm.swappiness=1
+&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;EOF
+
+&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;# Set limits&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; /etc/security/limits.d/20-nproc.conf &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;EOF&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;
+
+*       soft    nproc   100000
+root    soft    nproc   unlimited
+*       soft    nofile  100000
+*       hard    nofile  1000000
+*       hard    nproc   1000000
+&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;EOF
+
+&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;# Make sysctl take effect&lt;/span&gt;
+sysctl &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>NOZUONOHIGH</name></author><category term="centos 7.x" /><category term="init" /><summary type="html">CentOS 7.x 系统初始化配置，适用于常规用途或用于制作 vmware/openstack 的模版镜像。</summary></entry><entry><title type="html">如何在 CentOS 7.x 上安装 MySQL 5.7</title><link href="http://172.17.10.122:4000/databases/how-to-install-mysql57-on-centos7x" rel="alternate" type="text/html" title="如何在 CentOS 7.x 上安装 MySQL 5.7" /><published>2018-08-04T00:00:00+08:00</published><updated>2018-07-28T00:00:00+08:00</updated><id>http://172.17.10.122:4000/databases/install-mysql5.7-on-centos7.x</id><content type="html" xml:base="http://172.17.10.122:4000/databases/how-to-install-mysql57-on-centos7x">&lt;h3 id=&quot;1-安装mysql57&quot;&gt;1. 安装mysql5.7&lt;/h3&gt;
 
 &lt;h4 id=&quot;centos6x&quot;&gt;CentOS6.x&lt;/h4&gt;
 &lt;p&gt;使用中国科技大学镜像源：https://mirrors.ustc.edu.cn/mysql-ftp/Downloads/&lt;/p&gt;
@@ -423,220 +536,7 @@ root     15687  1260  0 11:50 pts/1    00:00:00 grep --color=auto mysql
 &lt;blockquote&gt;
   &lt;p&gt;http://www.tecmint.com/install-latest-mysql-on-rhel-centos-and-fedora/
 https://www.digitalocean.com/community/tutorials/how-to-install-mysql-on-centos-7&lt;/p&gt;
-&lt;/blockquote&gt;</content><author><name>NOZUONOHIGH</name></author><category term="secret" /><category term="configMap" /><category term="binary" /><summary type="html">如何在 CentOS 7.x 上安装 MySQL 5.7</summary></entry><entry><title type="html">在 CentOS7 上使用 rvm 安装 ruby 并配置 Jeykll 使用 minimal-mistakes 主题</title><link href="http://192.168.100.100:4000/systems/install-jekyll-minimal-mistakes-using-ruby-managed-by-rvm" rel="alternate" type="text/html" title="在 CentOS7 上使用 rvm 安装 ruby 并配置 Jeykll 使用 minimal-mistakes 主题" /><published>2018-08-02T00:00:00+08:00</published><updated>2018-08-02T00:00:00+08:00</updated><id>http://192.168.100.100:4000/systems/install-jekyll-minimal-mistakes-using-ruby-managed-by-rvm</id><content type="html" xml:base="http://192.168.100.100:4000/systems/install-jekyll-minimal-mistakes-using-ruby-managed-by-rvm">&lt;p&gt;本次的主要目的是使用&lt;code class=&quot;highlighter-rouge&quot;&gt;minimal-mistakes&lt;/code&gt;这个&lt;code class=&quot;highlighter-rouge&quot;&gt;Jekyll&lt;/code&gt;主题来构建一个博客，引发一系列劳神费力的事情。&lt;/p&gt;
-
-&lt;h3 id=&quot;安装rvm&quot;&gt;安装&lt;code class=&quot;highlighter-rouge&quot;&gt;rvm&lt;/code&gt;&lt;/h3&gt;
-&lt;p&gt;参考这个帖子： https://tecadmin.net/install-ruby-latest-stable-centos/&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;设置yum源&lt;/p&gt;
-
-    &lt;p&gt;由于国内网络问题，需要事先设置好&lt;code class=&quot;highlighter-rouge&quot;&gt;yum&lt;/code&gt;的base和epel源，我使用了中国科技大学的yum源，配置不赘述。&lt;/p&gt;
-
-    &lt;p&gt;可以参考这里：&lt;a href=&quot;/systems/centos7-system-init&quot;&gt;CentOS 7.x 系统初始化配置&lt;/a&gt;&lt;/p&gt;
-
-    &lt;p&gt;由于已经指定了yum镜像，我禁用了yum的&lt;code class=&quot;highlighter-rouge&quot;&gt;fastestmirror&lt;/code&gt;插件：&lt;/p&gt;
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;vi /etc/yum/pluginconf.d/fastestmirror.conf
-  
-[main]
-enabled=0
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;安装依赖
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;yum -y install gcc-c++ patch readline readline-devel zlib zlib-devel \
- libyaml-devel libffi-devel openssl-devel make \
- bzip2 autoconf automake libtool bison iconv-devel sqlite-devel
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;安装rvm
-使用curl安装，下载很慢，先设置代理：
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;export http_proxy=&quot;http:st.xxxx.me:44443&quot;
-export https_proxy=&quot;http:st.xxxx.me:44443&quot;
-  
-curl -sSL https://rvm.io/mpapis.asc | gpg --import -
-curl -L get.rvm.io | bash -s stable
-
-source /etc/profile.d/rvm.sh
-rvm reload
-  
-rvm requirements run
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;安装ruby&quot;&gt;安装ruby&lt;/h3&gt;
-
-&lt;p&gt;我们使用rvm安装ruby，同理需要设置rvm使用国内的镜像源，我这里替换成了淘宝的源：&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sed&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-E&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'s!https?://cache.ruby-lang.org/pub/ruby!https://ruby.taobao.org/mirrors/ruby!'&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$rvm_path&lt;/span&gt;/config/db
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;由于Jekyll依赖&lt;code class=&quot;highlighter-rouge&quot;&gt;ffi&lt;/code&gt;这个模块，它支持Ruby &amp;amp; RubyGems的最新版本是 &lt;code class=&quot;highlighter-rouge&quot;&gt;ffi 1.9.18&lt;/code&gt;, 并且支持Ruby的版本要求 &amp;lt; 2.5, &amp;gt;= 2.0，因此我选择安装ruby 2.4:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;rvm &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;2.4
-
-&lt;span class=&quot;c&quot;&gt;#安装完成检查已安装的版本&lt;/span&gt;
-rvm list
-
-&lt;span class=&quot;c&quot;&gt;#设置默认ruby&lt;/span&gt;
-rvm use 2.4 &lt;span class=&quot;nt&quot;&gt;--default&lt;/span&gt;
-ruby &lt;span class=&quot;nt&quot;&gt;--version&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;安装jekyll&quot;&gt;安装Jekyll&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;设置&lt;code class=&quot;highlighter-rouge&quot;&gt;gem mirrors&lt;/code&gt;&lt;/p&gt;
-
-    &lt;p&gt;由于安装过程中gem会下载一堆依赖，我们还需要设置gem的镜像地址，这里还是选择了淘宝的镜像：&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;全局设置
-        &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gem sources &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;
-gem sources &lt;span class=&quot;nt&quot;&gt;--remove&lt;/span&gt; https://rubygems.org
-gem sources &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt; https://ruby.taobao.org
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
-      &lt;/li&gt;
-      &lt;li&gt;当前项目
-        &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bundle config mirror.https://rubygems.org https://ruby.taobao.org
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
-
-        &lt;p&gt;或者修改项目目录下的&lt;code class=&quot;highlighter-rouge&quot;&gt;Gemfile&lt;/code&gt;文件：&lt;/p&gt;
-        &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;vim Gemfile
-    
-&lt;span class=&quot;c&quot;&gt;#source 'https://rubygems.org/'&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;source&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'https://ruby.taobao.org/'&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;安装Jekyll&lt;/p&gt;
-    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gem &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;bundler jekyll
-jekyll new xxxx.me
-&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;my-awesome-site
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;使用minimal-mistakes主题&quot;&gt;使用&lt;code class=&quot;highlighter-rouge&quot;&gt;minimal-mistakes&lt;/code&gt;主题&lt;/h3&gt;
-&lt;p&gt;文档：&lt;/p&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;https://mmistakes.github.io/minimal-mistakes/docs/quick-start-guide/&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;vim Gemfile&lt;/code&gt;
-    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gem &lt;span class=&quot;s2&quot;&gt;&quot;minimal-mistakes-jekyll&quot;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;vim _config.yml&lt;/code&gt;
-    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;theme: minimal-mistakes-jekyll
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;安装&lt;code class=&quot;highlighter-rouge&quot;&gt;minimal-mistakes-jekyll&lt;/code&gt;的依赖
-    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bundle &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;启动服务
-    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bundle &lt;span class=&quot;nb&quot;&gt;exec &lt;/span&gt;jekyll serve &lt;span class=&quot;nt&quot;&gt;--host&lt;/span&gt; 192.168.100.100 &lt;span class=&quot;nt&quot;&gt;-w&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;访问服务&lt;/p&gt;
-
-    &lt;blockquote&gt;
-      &lt;p&gt;http://192.168.100.100:4000&lt;/p&gt;
-    &lt;/blockquote&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;美化定制&quot;&gt;美化定制&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;修改页面宽度&lt;/p&gt;
-
-    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;vim ./_sass/minimal-mistakes/_variables.scss&lt;/code&gt;&lt;/p&gt;
-
-    &lt;div class=&quot;language-scss highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cm&quot;&gt;/*
-   Breakpoints
-   ========================================================================== */&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$small&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;600px&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;default&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$medium&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;768px&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;default&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$medium-wide&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1024px&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;default&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$large&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1200px&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;default&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$x-large&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1366px&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;default&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-  
-&lt;span class=&quot;cm&quot;&gt;/*
-   Grid
-   ========================================================================== */&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$right-sidebar-width-narrow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;220px&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;default&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$right-sidebar-width&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;260px&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;default&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$right-sidebar-width-wide&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;300px&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;default&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;修改页面字体大小&lt;/p&gt;
-
-    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;vim ./_sass/minimal-mistakes/_reset.scss&lt;/code&gt;&lt;/p&gt;
-
-    &lt;div class=&quot;language-scss highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;html&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;cm&quot;&gt;/* apply a natural box layout model to all elements */&lt;/span&gt;
-  &lt;span class=&quot;nl&quot;&gt;box-sizing&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;border-box&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-  &lt;span class=&quot;nl&quot;&gt;background-color&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$background-color&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-  &lt;span class=&quot;nl&quot;&gt;font-size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;16px&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-  
-  &lt;span class=&quot;k&quot;&gt;@include&lt;/span&gt; &lt;span class=&quot;nd&quot;&gt;breakpoint&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$medium&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;nl&quot;&gt;font-size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;15px&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-  
-  &lt;span class=&quot;k&quot;&gt;@include&lt;/span&gt; &lt;span class=&quot;nd&quot;&gt;breakpoint&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$large&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;nl&quot;&gt;font-size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;16px&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-  
-  &lt;span class=&quot;k&quot;&gt;@include&lt;/span&gt; &lt;span class=&quot;nd&quot;&gt;breakpoint&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$x-large&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;nl&quot;&gt;font-size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;18px&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-  
-  &lt;span class=&quot;na&quot;&gt;-webkit-text-size-adjust&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;100%&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;-ms-text-size-adjust&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;100%&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;给 home 页面文章列表添加更新日期&lt;/p&gt;
-
-    &lt;p&gt;参考: https://github.com/dvhart/dvhart.github.io/blob/master/_includes/archive-single.html&lt;/p&gt;
-
-    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;vim _includes/archive-single.html&lt;/code&gt;&lt;/p&gt;
-
-    &lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  
-# 删除第 33-35 行，并在第32行后面插入如下部分
-  &lt;span class=&quot;c&quot;&gt;&amp;lt;!-- dvhart: date read-time meta line --&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;nt&quot;&gt;&amp;lt;p&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;page__meta&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
-    {% if post.last_modified_at %}
-      &lt;span class=&quot;nt&quot;&gt;&amp;lt;i&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;fa fa-fw fa-calendar&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;aria-hidden=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;true&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;/i&amp;gt;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;&amp;lt;time&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;datetime=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;{{ post.last_modified_at | date: &quot;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;Y-&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;m-&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;}}&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;{{ post.last_modified_at | date: &quot;%B %d, %Y&quot; }}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/time&amp;gt;&lt;/span&gt;&lt;span class=&quot;ni&quot;&gt;&amp;amp;emsp;&lt;/span&gt;
-    {% elsif post.date %}
-      &lt;span class=&quot;nt&quot;&gt;&amp;lt;i&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;fa fa-fw fa-calendar&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;aria-hidden=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;true&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;/i&amp;gt;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;&amp;lt;time&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;datetime=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;{{ post.date | date_to_xmlschema }}&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;{{ post.date | date: &quot;%B %d, %Y &quot; }}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/time&amp;gt;&lt;/span&gt;&lt;span class=&quot;ni&quot;&gt;&amp;amp;emsp;&lt;/span&gt;
-    {% endif %}
-    {% if post.read_time %}&lt;span class=&quot;nt&quot;&gt;&amp;lt;i&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;fa fa-clock-o&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;aria-hidden=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;true&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;/i&amp;gt;&lt;/span&gt;&lt;span class=&quot;ni&quot;&gt;&amp;amp;nbsp;&lt;/span&gt;{% include read-time.html %}{% endif %}
-  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;c&quot;&gt;&amp;lt;!-- end dvhart date read-time meta line --&amp;gt;&lt;/span&gt;
-  
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;布局设置&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;https://mmistakes.github.io/minimal-mistakes/docs/layouts/#headers&lt;br /&gt;
-https://github.com/mmistakes/minimal-mistakes/issues/892&lt;br /&gt;
-https://github.com/mmistakes/minimal-mistakes/issues/1303&lt;/p&gt;
-&lt;/blockquote&gt;</content><author><name>NOZUONOHIGH</name></author><category term="centos 7.x" /><category term="rvm" /><category term="ruby" /><category term="jekyll" /><category term="minimal-mistakes" /><summary type="html">在 CentOS7 上使用 rvm 安装 ruby 并配置 Jeykll 使用 minimal-mistakes 主题</summary></entry><entry><title type="html">制作 OpenStack 的 CentOS6.x 镜像</title><link href="http://192.168.100.100:4000/openstack/create-centos6-image-for-openstack" rel="alternate" type="text/html" title="制作 OpenStack 的 CentOS6.x 镜像" /><published>2018-08-02T00:00:00+08:00</published><updated>2017-09-11T00:00:00+08:00</updated><id>http://192.168.100.100:4000/openstack/create-centos6-image-for-openstack</id><content type="html" xml:base="http://192.168.100.100:4000/openstack/create-centos6-image-for-openstack">&lt;h3 id=&quot;简介&quot;&gt;简介&lt;/h3&gt;
+&lt;/blockquote&gt;</content><author><name>NOZUONOHIGH</name></author><category term="secret" /><category term="configMap" /><category term="binary" /><summary type="html">如何在 CentOS 7.x 上安装 MySQL 5.7</summary></entry><entry><title type="html">制作 OpenStack 的 CentOS6.x 镜像</title><link href="http://172.17.10.122:4000/openstack/create-centos6-image-for-openstack" rel="alternate" type="text/html" title="制作 OpenStack 的 CentOS6.x 镜像" /><published>2018-08-02T00:00:00+08:00</published><updated>2017-09-11T00:00:00+08:00</updated><id>http://172.17.10.122:4000/openstack/create-centos6-image-for-openstack</id><content type="html" xml:base="http://172.17.10.122:4000/openstack/create-centos6-image-for-openstack">&lt;h3 id=&quot;简介&quot;&gt;简介&lt;/h3&gt;
 &lt;p&gt;创建 OpenStack 实例时，我们多数时间是使用 镜像+实例类型 来创建的。那么，制作一个通用的镜像就很重要了。&lt;/p&gt;
 
 &lt;p&gt;当用户创建一个实例时，会选择相应的镜像（如centos6.8 或者centos7.3 ），再选择相应的实例类型，如&lt;code class=&quot;highlighter-rouge&quot;&gt;t2.micro&lt;/code&gt;、&lt;code class=&quot;highlighter-rouge&quot;&gt;t2.large&lt;/code&gt;, 实际他们对应的可能是&lt;code class=&quot;highlighter-rouge&quot;&gt;2C/2G/20G&lt;/code&gt;或&lt;code class=&quot;highlighter-rouge&quot;&gt;4C/4G/40G&lt;/code&gt;的硬件配置。&lt;/p&gt;
@@ -868,7 +768,220 @@ virt-sparsify &lt;span class=&quot;nt&quot;&gt;--compress&lt;/span&gt; ./centos.
 &lt;p&gt;确保你制作的镜像已经可用。并且意味着你下次需要重新创建并安装系统。&lt;/p&gt;
 &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;virsh list &lt;span class=&quot;nt&quot;&gt;--all&lt;/span&gt;
 virsh undefine centos6.8
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>NOZUONOHIGH</name></author><summary type="html">创建 OpenStack 实例时，我们多数时间是使用 镜像+实例类型 来创建的。那么，制作一个通用的镜像就很重要了。</summary></entry><entry><title type="html">如何从 OpenStack 中彻底删除僵尸实例</title><link href="http://192.168.100.100:4000/openstack/delete-zombie-instances-completly" rel="alternate" type="text/html" title="如何从 OpenStack 中彻底删除僵尸实例" /><published>2018-08-01T00:00:00+08:00</published><updated>2018-08-01T00:00:00+08:00</updated><id>http://192.168.100.100:4000/openstack/delete-zombie-instance-completly</id><content type="html" xml:base="http://192.168.100.100:4000/openstack/delete-zombie-instances-completly">&lt;h3 id=&quot;1正常删除实例ocata&quot;&gt;1、正常删除实例（ocata）&lt;/h3&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>NOZUONOHIGH</name></author><summary type="html">创建 OpenStack 实例时，我们多数时间是使用 镜像+实例类型 来创建的。那么，制作一个通用的镜像就很重要了。</summary></entry><entry><title type="html">在 CentOS7 上使用 rvm 安装 ruby 并配置 Jeykll 使用 minimal-mistakes 主题</title><link href="http://172.17.10.122:4000/systems/install-jekyll-minimal-mistakes-using-ruby-managed-by-rvm" rel="alternate" type="text/html" title="在 CentOS7 上使用 rvm 安装 ruby 并配置 Jeykll 使用 minimal-mistakes 主题" /><published>2018-08-02T00:00:00+08:00</published><updated>2018-08-02T00:00:00+08:00</updated><id>http://172.17.10.122:4000/systems/install-jekyll-minimal-mistakes-using-ruby-managed-by-rvm</id><content type="html" xml:base="http://172.17.10.122:4000/systems/install-jekyll-minimal-mistakes-using-ruby-managed-by-rvm">&lt;p&gt;本次的主要目的是使用&lt;code class=&quot;highlighter-rouge&quot;&gt;minimal-mistakes&lt;/code&gt;这个&lt;code class=&quot;highlighter-rouge&quot;&gt;Jekyll&lt;/code&gt;主题来构建一个博客，引发一系列劳神费力的事情。&lt;/p&gt;
+
+&lt;h3 id=&quot;安装rvm&quot;&gt;安装&lt;code class=&quot;highlighter-rouge&quot;&gt;rvm&lt;/code&gt;&lt;/h3&gt;
+&lt;p&gt;参考这个帖子： https://tecadmin.net/install-ruby-latest-stable-centos/&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;设置yum源&lt;/p&gt;
+
+    &lt;p&gt;由于国内网络问题，需要事先设置好&lt;code class=&quot;highlighter-rouge&quot;&gt;yum&lt;/code&gt;的base和epel源，我使用了中国科技大学的yum源，配置不赘述。&lt;/p&gt;
+
+    &lt;p&gt;可以参考这里：&lt;a href=&quot;/systems/centos7-system-init&quot;&gt;CentOS 7.x 系统初始化配置&lt;/a&gt;&lt;/p&gt;
+
+    &lt;p&gt;由于已经指定了yum镜像，我禁用了yum的&lt;code class=&quot;highlighter-rouge&quot;&gt;fastestmirror&lt;/code&gt;插件：&lt;/p&gt;
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;vi /etc/yum/pluginconf.d/fastestmirror.conf
+  
+[main]
+enabled=0
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;安装依赖
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;yum -y install gcc-c++ patch readline readline-devel zlib zlib-devel \
+ libyaml-devel libffi-devel openssl-devel make \
+ bzip2 autoconf automake libtool bison iconv-devel sqlite-devel
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;安装rvm
+使用curl安装，下载很慢，先设置代理：
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;export http_proxy=&quot;http:st.xxxx.me:44443&quot;
+export https_proxy=&quot;http:st.xxxx.me:44443&quot;
+  
+curl -sSL https://rvm.io/mpapis.asc | gpg --import -
+curl -L get.rvm.io | bash -s stable
+
+source /etc/profile.d/rvm.sh
+rvm reload
+  
+rvm requirements run
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;安装ruby&quot;&gt;安装ruby&lt;/h3&gt;
+
+&lt;p&gt;我们使用rvm安装ruby，同理需要设置rvm使用国内的镜像源，我这里替换成了淘宝的源：&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sed&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-E&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'s!https?://cache.ruby-lang.org/pub/ruby!https://ruby.taobao.org/mirrors/ruby!'&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$rvm_path&lt;/span&gt;/config/db
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;由于Jekyll依赖&lt;code class=&quot;highlighter-rouge&quot;&gt;ffi&lt;/code&gt;这个模块，它支持Ruby &amp;amp; RubyGems的最新版本是 &lt;code class=&quot;highlighter-rouge&quot;&gt;ffi 1.9.18&lt;/code&gt;, 并且支持Ruby的版本要求 &amp;lt; 2.5, &amp;gt;= 2.0，因此我选择安装ruby 2.4:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;rvm &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;2.4
+
+&lt;span class=&quot;c&quot;&gt;#安装完成检查已安装的版本&lt;/span&gt;
+rvm list
+
+&lt;span class=&quot;c&quot;&gt;#设置默认ruby&lt;/span&gt;
+rvm use 2.4 &lt;span class=&quot;nt&quot;&gt;--default&lt;/span&gt;
+ruby &lt;span class=&quot;nt&quot;&gt;--version&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;安装jekyll&quot;&gt;安装Jekyll&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;设置&lt;code class=&quot;highlighter-rouge&quot;&gt;gem mirrors&lt;/code&gt;&lt;/p&gt;
+
+    &lt;p&gt;由于安装过程中gem会下载一堆依赖，我们还需要设置gem的镜像地址，这里还是选择了淘宝的镜像：&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;全局设置
+        &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gem sources &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;
+gem sources &lt;span class=&quot;nt&quot;&gt;--remove&lt;/span&gt; https://rubygems.org
+gem sources &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt; https://ruby.taobao.org
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
+      &lt;/li&gt;
+      &lt;li&gt;当前项目
+        &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bundle config mirror.https://rubygems.org https://ruby.taobao.org
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
+
+        &lt;p&gt;或者修改项目目录下的&lt;code class=&quot;highlighter-rouge&quot;&gt;Gemfile&lt;/code&gt;文件：&lt;/p&gt;
+        &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;vim Gemfile
+    
+&lt;span class=&quot;c&quot;&gt;#source 'https://rubygems.org/'&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;source&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'https://ruby.taobao.org/'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;安装Jekyll&lt;/p&gt;
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gem &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;bundler jekyll
+jekyll new xxxx.me
+&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;my-awesome-site
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;使用minimal-mistakes主题&quot;&gt;使用&lt;code class=&quot;highlighter-rouge&quot;&gt;minimal-mistakes&lt;/code&gt;主题&lt;/h3&gt;
+&lt;p&gt;文档：&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;https://mmistakes.github.io/minimal-mistakes/docs/quick-start-guide/&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;vim Gemfile&lt;/code&gt;
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gem &lt;span class=&quot;s2&quot;&gt;&quot;minimal-mistakes-jekyll&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;vim _config.yml&lt;/code&gt;
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;theme: minimal-mistakes-jekyll
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;安装&lt;code class=&quot;highlighter-rouge&quot;&gt;minimal-mistakes-jekyll&lt;/code&gt;的依赖
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bundle &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;启动服务
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bundle &lt;span class=&quot;nb&quot;&gt;exec &lt;/span&gt;jekyll serve &lt;span class=&quot;nt&quot;&gt;--host&lt;/span&gt; 192.168.100.100 &lt;span class=&quot;nt&quot;&gt;-w&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;访问服务&lt;/p&gt;
+
+    &lt;blockquote&gt;
+      &lt;p&gt;http://192.168.100.100:4000&lt;/p&gt;
+    &lt;/blockquote&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;美化定制&quot;&gt;美化定制&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;修改页面宽度&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;vim ./_sass/minimal-mistakes/_variables.scss&lt;/code&gt;&lt;/p&gt;
+
+    &lt;div class=&quot;language-scss highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cm&quot;&gt;/*
+   Breakpoints
+   ========================================================================== */&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$small&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;600px&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;default&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$medium&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;768px&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;default&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$medium-wide&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1024px&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;default&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$large&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1200px&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;default&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$x-large&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1366px&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;default&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  
+&lt;span class=&quot;cm&quot;&gt;/*
+   Grid
+   ========================================================================== */&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$right-sidebar-width-narrow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;220px&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;default&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$right-sidebar-width&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;260px&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;default&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$right-sidebar-width-wide&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;300px&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;default&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;修改页面字体大小&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;vim ./_sass/minimal-mistakes/_reset.scss&lt;/code&gt;&lt;/p&gt;
+
+    &lt;div class=&quot;language-scss highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;html&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;cm&quot;&gt;/* apply a natural box layout model to all elements */&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;box-sizing&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;border-box&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;background-color&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$background-color&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;font-size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;16px&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  
+  &lt;span class=&quot;k&quot;&gt;@include&lt;/span&gt; &lt;span class=&quot;nd&quot;&gt;breakpoint&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$medium&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nl&quot;&gt;font-size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;15px&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  
+  &lt;span class=&quot;k&quot;&gt;@include&lt;/span&gt; &lt;span class=&quot;nd&quot;&gt;breakpoint&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$large&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nl&quot;&gt;font-size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;16px&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  
+  &lt;span class=&quot;k&quot;&gt;@include&lt;/span&gt; &lt;span class=&quot;nd&quot;&gt;breakpoint&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$x-large&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nl&quot;&gt;font-size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;18px&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  
+  &lt;span class=&quot;na&quot;&gt;-webkit-text-size-adjust&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;100%&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;-ms-text-size-adjust&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;100%&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;给 home 页面文章列表添加更新日期&lt;/p&gt;
+
+    &lt;p&gt;参考: https://github.com/dvhart/dvhart.github.io/blob/master/_includes/archive-single.html&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;vim _includes/archive-single.html&lt;/code&gt;&lt;/p&gt;
+
+    &lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  
+# 删除第 33-35 行，并在第32行后面插入如下部分
+  &lt;span class=&quot;c&quot;&gt;&amp;lt;!-- dvhart: date read-time meta line --&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;p&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;page__meta&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+    {% if post.last_modified_at %}
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;i&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;fa fa-fw fa-calendar&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;aria-hidden=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;true&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;/i&amp;gt;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;&amp;lt;time&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;datetime=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;{{ post.last_modified_at | date: &quot;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;Y-&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;m-&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;}}&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;{{ post.last_modified_at | date: &quot;%B %d, %Y&quot; }}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/time&amp;gt;&lt;/span&gt;&lt;span class=&quot;ni&quot;&gt;&amp;amp;emsp;&lt;/span&gt;
+    {% elsif post.date %}
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;i&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;fa fa-fw fa-calendar&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;aria-hidden=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;true&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;/i&amp;gt;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;&amp;lt;time&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;datetime=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;{{ post.date | date_to_xmlschema }}&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;{{ post.date | date: &quot;%B %d, %Y &quot; }}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/time&amp;gt;&lt;/span&gt;&lt;span class=&quot;ni&quot;&gt;&amp;amp;emsp;&lt;/span&gt;
+    {% endif %}
+    {% if post.read_time %}&lt;span class=&quot;nt&quot;&gt;&amp;lt;i&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;fa fa-clock-o&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;aria-hidden=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;true&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;/i&amp;gt;&lt;/span&gt;&lt;span class=&quot;ni&quot;&gt;&amp;amp;nbsp;&lt;/span&gt;{% include read-time.html %}{% endif %}
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;c&quot;&gt;&amp;lt;!-- end dvhart date read-time meta line --&amp;gt;&lt;/span&gt;
+  
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;布局设置&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;https://mmistakes.github.io/minimal-mistakes/docs/layouts/#headers&lt;br /&gt;
+https://github.com/mmistakes/minimal-mistakes/issues/892&lt;br /&gt;
+https://github.com/mmistakes/minimal-mistakes/issues/1303&lt;/p&gt;
+&lt;/blockquote&gt;</content><author><name>NOZUONOHIGH</name></author><category term="centos 7.x" /><category term="rvm" /><category term="ruby" /><category term="jekyll" /><category term="minimal-mistakes" /><summary type="html">在 CentOS7 上使用 rvm 安装 ruby 并配置 Jeykll 使用 minimal-mistakes 主题</summary></entry><entry><title type="html">如何从 OpenStack 中彻底删除僵尸实例</title><link href="http://172.17.10.122:4000/openstack/delete-zombie-instances-completly" rel="alternate" type="text/html" title="如何从 OpenStack 中彻底删除僵尸实例" /><published>2018-08-01T00:00:00+08:00</published><updated>2018-08-01T00:00:00+08:00</updated><id>http://172.17.10.122:4000/openstack/delete-zombie-instance-completly</id><content type="html" xml:base="http://172.17.10.122:4000/openstack/delete-zombie-instances-completly">&lt;h3 id=&quot;1正常删除实例ocata&quot;&gt;1、正常删除实例（ocata）&lt;/h3&gt;
 &lt;blockquote&gt;
   &lt;p&gt;https://docs.openstack.org/user-guide/cli-delete-an-instance.html&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -1012,7 +1125,7 @@ MariaDB &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;nova]&amp;gt; &lt;span cla
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 &lt;p&gt;&lt;img src=&quot;https://ws3.sinaimg.cn/large/6ee6fa3egy1ftyvw31xpaj20i8065aaf.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;正常了。&lt;/p&gt;</content><author><name>NOZUONOHIGH</name></author><category term="openstack" /><category term="zombie" /><category term="mysql" /><summary type="html">在使用运维 OpenStack 的过程中，我们可能会遇到系统错误引起实例删除失败。通常是 Dashboard 上显示实例已经不存在了，但 MySQL 数据库中还有很多冗余的信息。</summary></entry><entry><title type="html">使用 secret 和 configmap 将二进制文件挂载到容器内</title><link href="http://192.168.100.100:4000/kubernetes/mount-binary-files-into-pods-using-secret-and-configmap" rel="alternate" type="text/html" title="使用 secret 和 configmap 将二进制文件挂载到容器内" /><published>2018-07-28T00:00:00+08:00</published><updated>2018-07-28T00:00:00+08:00</updated><id>http://192.168.100.100:4000/kubernetes/mount-binary-files-into-pods-using-secret-and-configmap</id><content type="html" xml:base="http://192.168.100.100:4000/kubernetes/mount-binary-files-into-pods-using-secret-and-configmap">&lt;h3 id=&quot;背景&quot;&gt;背景&lt;/h3&gt;
+&lt;p&gt;正常了。&lt;/p&gt;</content><author><name>NOZUONOHIGH</name></author><category term="openstack" /><category term="zombie" /><category term="mysql" /><summary type="html">在使用运维 OpenStack 的过程中，我们可能会遇到系统错误引起实例删除失败。通常是 Dashboard 上显示实例已经不存在了，但 MySQL 数据库中还有很多冗余的信息。</summary></entry><entry><title type="html">使用 secret 和 configmap 将二进制文件挂载到容器内</title><link href="http://172.17.10.122:4000/kubernetes/mount-binary-files-into-pods-using-secret-and-configmap" rel="alternate" type="text/html" title="使用 secret 和 configmap 将二进制文件挂载到容器内" /><published>2018-07-28T00:00:00+08:00</published><updated>2018-07-28T00:00:00+08:00</updated><id>http://172.17.10.122:4000/kubernetes/mount-binary-files-into-pods-using-secret-and-configmap</id><content type="html" xml:base="http://172.17.10.122:4000/kubernetes/mount-binary-files-into-pods-using-secret-and-configmap">&lt;h3 id=&quot;背景&quot;&gt;背景&lt;/h3&gt;
 
 &lt;p&gt;我们一个项目的开发人员提出一个需：其中一个微服务需要使用ssl方式连接外部的&lt;code class=&quot;highlighter-rouge&quot;&gt;kafka&lt;/code&gt;服务，实现双向认证。因此需要本地配置客户端证书，在发起连接时加载。&lt;/p&gt;
 

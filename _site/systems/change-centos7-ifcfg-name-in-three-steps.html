@@ -9,27 +9,33 @@
   <head>
     <meta charset="utf-8">
 
-<!-- begin _includes/seo.html --><title>美景定当不负</title>
-<meta name="description" content="An amazing website.">
+<!-- begin _includes/seo.html --><title>3步修改 CentOS7 网卡名为 eth0 - 美景定当不负</title>
+<meta name="description" content="简单3步，将 CentOS7 网卡名由 ensxx 修改为 eth0。">
 
 
 
-<meta property="og:type" content="website">
+<meta property="og:type" content="article">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="美景定当不负">
-<meta property="og:title" content="美景定当不负">
-<meta property="og:url" content="http://172.17.10.122:4000/">
+<meta property="og:title" content="3步修改 CentOS7 网卡名为 eth0">
+<meta property="og:url" content="http://172.17.10.122:4000/systems/change-centos7-ifcfg-name-in-three-steps">
+
+
+  <meta property="og:description" content="简单3步，将 CentOS7 网卡名由 ensxx 修改为 eth0。">
+
+
+
+  <meta property="og:image" content="http://172.17.10.122:4000/assets/images/earth-night.jpg">
 
 
 
 
-  <meta property="og:image" content="http://172.17.10.122:4000/assets/images/sunrise.jpg">
+
+  <meta property="article:published_time" content="2018-11-18T00:00:00+08:00">
 
 
 
-
-
-
+  <meta property="article:modified_time" content="2018-11-18T00:00:00+08:00">
 
 
 
@@ -38,7 +44,7 @@
   
 
 
-<link rel="canonical" href="http://172.17.10.122:4000/">
+<link rel="canonical" href="http://172.17.10.122:4000/systems/change-centos7-ifcfg-name-in-three-steps">
 
 
 
@@ -103,7 +109,7 @@
 
   </head>
 
-  <body class="layout--posts">
+  <body class="layout--single">
 
     <!--[if lt IE 9]>
 <div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
@@ -183,7 +189,7 @@
   style=" "
 >
   
-    <img src="/assets/images/sunrise.jpg" alt="" class="page__hero-image">
+    <img src="/assets/images/earth-night.jpg" alt="3步修改 CentOS7 网卡名为 eth0" class="page__hero-image">
   
   
 </div>
@@ -308,91 +314,166 @@
 
 
   <article class="page" itemscope itemtype="http://schema.org/CreativeWork">
-    
-    
-    
-    
+    <meta itemprop="headline" content="3步修改 CentOS7 网卡名为 eth0">
+    <meta itemprop="description" content="简单3步，将 CentOS7 网卡名由 ensxx 修改为 eth0。">
+    <meta itemprop="datePublished" content="November 18, 2018">
+    <meta itemprop="dateModified" content="November 18, 2018">
 
     <div class="page__inner-wrap">
       
         <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">3步修改 CentOS7 网卡名为 eth0
+</h1>
           
+            <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+</p>
           
         </header>
       
 
       <section class="page__content" itemprop="text">
         
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On This Page</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#1修改网卡配置文件">1、修改网卡配置文件</a></li>
+  <li><a href="#2修改内核启动参数">2、修改内核启动参数</a></li>
+  <li><a href="#3禁用-networkmanager按需使用">3、禁用 NetworkManager（按需使用）</a></li>
+  <li><a href="#4重启系统">4、重启系统</a></li>
+</ul>
+            </nav>
+          </aside>
         
-<div class="feature__wrapper">
+        <p>使用简单的3步，将 CentOS7 网卡名由 ensxx 修改为 eth0。</p>
 
-  
+<h3 id="1修改网卡配置文件">1、修改网卡配置文件</h3>
 
-</div>
+<ul>
+  <li>更改 ifcfg 文件名
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">ls</span> /etc/sysconfig/network-scripts/ifcfg-ens<span class="k">*</span> | xargs <span class="nt">-I</span> <span class="s1">'{}'</span> <span class="nb">mv</span> <span class="s1">'{}'</span> /etc/sysconfig/network-scripts/ifcfg-eth0
+</code></pre></div>    </div>
+    <p>其实这一步不是必须的，直接执行下一步创建一个新文件也可以。</p>
+  </li>
+  <li>配置IP地址
+修改 NAME 和 DEVICE 的值为 eth0。可按需配置固定IP。
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cat</span> <span class="o">&gt;</span> /etc/sysconfig/network-scripts/ifcfg-eth0 <span class="o">&lt;&lt;</span> <span class="no">EOF</span><span class="sh">
+TYPE=Ethernet
+DEVICE=eth0
+NAME=eth0
+ONBOOT=yes
+BOOTPROTO=dhcp
+PEERDNS=no
+IPV6INIT=no
+</span><span class="no">EOF
+</span></code></pre></div>    </div>
 
-<div class="feature__wrapper">
-
-  
-
-</div>
-
-
-<ul class="taxonomy__index">
-  
-  
-    <li>
-      <a href="#2018">
-        <strong>2018</strong> <span class="taxonomy__count">9</span>
-      </a>
-    </li>
-  
+    <p>这一步完成若，重启网络会失败的，因为网卡和设备名变了。</p>
+  </li>
 </ul>
 
+<h3 id="2修改内核启动参数">2、修改内核启动参数</h3>
+
+<ul>
+  <li>
+    <p>修改 grub 文件</p>
+
+    <p>编辑 <code class="highlighter-rouge">/etc/default/grub</code>, 在<code class="highlighter-rouge">GRUB_CMDLINE_LINUX</code>这一行末尾引号内添加<code class="highlighter-rouge">net.ifnames=0 biosdevname=0</code>，如下图：<br />
+<img src="https://ws1.sinaimg.cn/large/6ee6fa3egy1fnjphna6luj20ri03w3yp.jpg" alt="image" /></p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 一条命令实现</span>
+<span class="nb">sed</span> <span class="nt">-e</span> <span class="s1">'s/\&lt;quiet\&gt;/&amp; net.ifnames=0 biosdevname=0/'</span> <span class="nt">-i</span> /etc/default/grub
+</code></pre></div>    </div>
+    <p>以上命令参考: https://www.golinuxhub.com/2017/06/sed-insert-word-after-match-in-middle.html</p>
+  </li>
+  <li>
+    <p>重新生成 GRUB 配置文件</p>
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>grub2-mkconfig <span class="nt">-o</span> /boot/grub2/grub.cfg
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h3 id="3禁用-networkmanager按需使用">3、禁用 NetworkManager（按需使用）</h3>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> systemctl disable NetworkManager
+</code></pre></div></div>
+
+<h3 id="4重启系统">4、重启系统</h3>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>reboot
+</code></pre></div></div>
+
+<p>linux中查看网卡mac地址</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ifconfig <span class="nt">-a</span> <span class="c">#其中 HWaddr 字段就是mac地址</span>
+<span class="nb">cat</span> /sys/class/net/eth0/address <span class="c">#查看eth0的mac地址</span>
+<span class="nb">cat</span> /proc/net/arp <span class="c">#查看连接到本机的远端ip的mac地址</span>
+</code></pre></div></div>
+
+<p>参考</p>
+<blockquote>
+  <p>http://www.centoscn.com/CentOS/config/2015/0404/5094.html<br />
+https://www.thegeekdiary.com/centos-rhel-7-how-to-modify-network-interface-names/</p>
+</blockquote>
 
 
-  <section id="2018" class="taxonomy__section">
-    <h2 class="archive__subtitle">2018</h2>
-    <div class="entries-list">
-      
+        
+      </section>
+
+      <footer class="page__meta">
+        
         
 
 
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2018-11-18">November 18, 2018</time></p>
+        
+      </footer>
 
-<div class="list__item">
-  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=3%E6%AD%A5%E4%BF%AE%E6%94%B9+CentOS7+%E7%BD%91%E5%8D%A1%E5%90%8D%E4%B8%BA+eth0%20http%3A%2F%2F172.17.10.122%3A4000%2Fsystems%2Fchange-centos7-ifcfg-name-in-three-steps" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2F172.17.10.122%3A4000%2Fsystems%2Fchange-centos7-ifcfg-name-in-three-steps" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://plus.google.com/share?url=http%3A%2F%2F172.17.10.122%3A4000%2Fsystems%2Fchange-centos7-ifcfg-name-in-three-steps" class="btn btn--google-plus" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Google Plus"><i class="fab fa-fw fa-google-plus" aria-hidden="true"></i><span> Google+</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2F172.17.10.122%3A4000%2Fsystems%2Fchange-centos7-ifcfg-name-in-three-steps" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
     
-    <h2 class="archive__item-title" itemprop="headline">
-      
-        <a href="/systems/change-centos7-ifcfg-name-in-three-steps" rel="permalink">3步修改 CentOS7 网卡名为 eth0
-</a>
-      
-    </h2>
+      <a href="/openstack/evacuate-instances-on-openstack-ocata-and-queens" class="pagination--pager" title="在 OpenStack Ocata/Queens 上一键完成实例疏散
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
 
-    <!-- dvhart: date read-time meta line -->
-    <p class="page__meta">
-      
-        <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2018-11-18">November 18, 2018</time>&emsp;
-      
-      <i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;
+    </div>
 
-
-
-
-  less than 1 minute read
-
-    </p>
-    <!-- end dvhart date read-time meta line -->
-
-    <p class="archive__item-excerpt" itemprop="description">简单3步，将 CentOS7 网卡名由 ensxx 修改为 eth0。
-</p>
+    
   </article>
-</div>
-      
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You May Also Enjoy</h4>
+      <div class="grid__wrapper">
         
+          
 
 
 
-<div class="list__item">
+<div class="grid__item">
   <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
     
     <h2 class="archive__item-title" itemprop="headline">
@@ -421,12 +502,12 @@
 </p>
   </article>
 </div>
-      
         
+          
 
 
 
-<div class="list__item">
+<div class="grid__item">
   <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
     
     <h2 class="archive__item-title" itemprop="headline">
@@ -455,12 +536,12 @@
 </p>
   </article>
 </div>
-      
         
+          
 
 
 
-<div class="list__item">
+<div class="grid__item">
   <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
     
     <h2 class="archive__item-title" itemprop="headline">
@@ -489,12 +570,12 @@
 </p>
   </article>
 </div>
-      
         
+          
 
 
 
-<div class="list__item">
+<div class="grid__item">
   <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
     
     <h2 class="archive__item-title" itemprop="headline">
@@ -523,167 +604,9 @@
 </p>
   </article>
 </div>
-      
         
-
-
-
-<div class="list__item">
-  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
-    
-    <h2 class="archive__item-title" itemprop="headline">
-      
-        <a href="/systems/install-jekyll-minimal-mistakes-using-ruby-managed-by-rvm" rel="permalink">在 CentOS7 上使用 rvm 安装 ruby 并配置 Jeykll 使用 minimal-mistakes 主题
-</a>
-      
-    </h2>
-
-    <!-- dvhart: date read-time meta line -->
-    <p class="page__meta">
-      
-        <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2018-08-02">August 02, 2018</time>&emsp;
-      
-      <i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;
-
-
-
-
-  1 minute read
-
-    </p>
-    <!-- end dvhart date read-time meta line -->
-
-    <p class="archive__item-excerpt" itemprop="description">在 CentOS7 上使用 rvm 安装 ruby 并配置 Jeykll 使用 minimal-mistakes 主题
-</p>
-  </article>
-</div>
-      
-        
-
-
-
-<div class="list__item">
-  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
-    
-    <h2 class="archive__item-title" itemprop="headline">
-      
-        <a href="/openstack/create-centos6-image-for-openstack" rel="permalink">制作 OpenStack 的 CentOS6.x 镜像
-</a>
-      
-    </h2>
-
-    <!-- dvhart: date read-time meta line -->
-    <p class="page__meta">
-      
-        <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2017-09-11">September 11, 2017</time>&emsp;
-      
-      <i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;
-
-
-
-
-  2 minute read
-
-    </p>
-    <!-- end dvhart date read-time meta line -->
-
-    <p class="archive__item-excerpt" itemprop="description">创建 OpenStack 实例时，我们多数时间是使用 镜像+实例类型 来创建的。那么，制作一个通用的镜像就很重要了。
-</p>
-  </article>
-</div>
-      
-        
-
-
-
-<div class="list__item">
-  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
-    
-    <h2 class="archive__item-title" itemprop="headline">
-      
-        <a href="/openstack/delete-zombie-instances-completly" rel="permalink">如何从 OpenStack 中彻底删除僵尸实例
-</a>
-      
-    </h2>
-
-    <!-- dvhart: date read-time meta line -->
-    <p class="page__meta">
-      
-        <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2018-08-01">August 01, 2018</time>&emsp;
-      
-      <i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;
-
-
-
-
-  2 minute read
-
-    </p>
-    <!-- end dvhart date read-time meta line -->
-
-    <p class="archive__item-excerpt" itemprop="description">在使用运维 OpenStack 的过程中，我们可能会遇到系统错误引起实例删除失败。通常是 Dashboard 上显示实例已经不存在了，但 MySQL 数据库中还有很多冗余的信息。
-</p>
-  </article>
-</div>
-      
-        
-
-
-
-<div class="list__item">
-  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
-    
-    <h2 class="archive__item-title" itemprop="headline">
-      
-        <a href="/kubernetes/mount-binary-files-into-pods-using-secret-and-configmap" rel="permalink">使用 secret 和 configmap 将二进制文件挂载到容器内
-</a>
-      
-    </h2>
-
-    <!-- dvhart: date read-time meta line -->
-    <p class="page__meta">
-      
-        <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2018-07-28">July 28, 2018</time>&emsp;
-      
-      <i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;
-
-
-
-
-  1 minute read
-
-    </p>
-    <!-- end dvhart date read-time meta line -->
-
-    <p class="archive__item-excerpt" itemprop="description">如何使用 secret 和 configmap 将二进制文件挂载到 pod 内
-</p>
-  </article>
-</div>
-      
+      </div>
     </div>
-    <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
-  </section>
-
-
-        
-      </section>
-
-      <footer class="page__meta">
-        
-        
-
-
-        
-      </footer>
-
-      
-
-      
-    </div>
-
-    
-  </article>
-
   
   
 </div>
@@ -734,6 +657,10 @@
 <script src="/assets/js/lunr/lunr-en.js"></script>
 
 
+
+
+    
+  
 
 
 

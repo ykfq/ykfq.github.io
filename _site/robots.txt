@@ -1,1 +1,1 @@
-Sitemap: http://192.168.100.100:4000/sitemap.xml
+Sitemap: http://172.17.10.122:4000/sitemap.xml

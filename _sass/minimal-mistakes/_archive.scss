@@ -7,13 +7,13 @@
 
   @include breakpoint($large) {
     float: right;
-    width: calc(100% - #{$right-sidebar-width-narrow});
-    padding-right: $right-sidebar-width-narrow;
+    width: calc(100% - #{$right-sidebar-width-minimal});
+    padding-right: $right-sidebar-width-minimal;
   }
 
   @include breakpoint($x-large) {
-    width: calc(100% - #{$right-sidebar-width});
-    padding-right: $right-sidebar-width;
+    width: calc(100% - #{$right-sidebar-width-narrow});
+    padding-right: $right-sidebar-width-narrow;
   }
 }
 
@@ -117,11 +117,11 @@
     /* extend grid elements to the right */
 
     @include breakpoint($large) {
-      margin-right: -1 * $right-sidebar-width-narrow;
+      margin-right: -1 * $right-sidebar-width-minimal;
     }
 
     @include breakpoint($x-large) {
-      margin-right: -1 * $right-sidebar-width;
+      margin-right: -1 * $right-sidebar-width-narrow;
     }
   }
 }

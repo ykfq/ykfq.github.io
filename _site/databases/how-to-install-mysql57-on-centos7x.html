@@ -18,14 +18,14 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="美景定当不负">
 <meta property="og:title" content="如何在 CentOS 7.x 上安装 MySQL 5.7">
-<meta property="og:url" content="http://192.168.100.100:4000/databases/how-to-install-mysql57-on-centos7x">
+<meta property="og:url" content="http://172.17.10.122:4000/databases/how-to-install-mysql57-on-centos7x">
 
 
   <meta property="og:description" content="如何在 CentOS 7.x 上安装 MySQL 5.7">
 
 
 
-  <meta property="og:image" content="http://192.168.100.100:4000/assets/images/earth-night.jpg">
+  <meta property="og:image" content="http://172.17.10.122:4000/assets/images/earth-night.jpg">
 
 
 
@@ -44,7 +44,7 @@
   
 
 
-<link rel="canonical" href="http://192.168.100.100:4000/databases/how-to-install-mysql57-on-centos7x">
+<link rel="canonical" href="http://172.17.10.122:4000/databases/how-to-install-mysql57-on-centos7x">
 
 
 
@@ -57,7 +57,7 @@
       "@context": "http://schema.org",
       "@type": "Person",
       "name": "NOZUONOHIGH",
-      "url": "http://192.168.100.100:4000",
+      "url": "http://172.17.10.122:4000",
       "sameAs": null
     }
   </script>
@@ -124,32 +124,32 @@
           
             
             <li class="masthead__menu-item">
-              <a href="http://192.168.100.100:4000/recent/" >Recent</a>
+              <a href="http://172.17.10.122:4000/recent/" >Recent</a>
             </li>
           
             
             <li class="masthead__menu-item">
-              <a href="http://192.168.100.100:4000/collections/" >Collections</a>
+              <a href="http://172.17.10.122:4000/collections/" >Collections</a>
             </li>
           
             
             <li class="masthead__menu-item">
-              <a href="http://192.168.100.100:4000/tags/" >Tags</a>
+              <a href="http://172.17.10.122:4000/tags/" >Tags</a>
             </li>
           
             
             <li class="masthead__menu-item">
-              <a href="http://192.168.100.100:4000/archive/" >Archive</a>
+              <a href="http://172.17.10.122:4000/archive/" >Archive</a>
             </li>
           
             
             <li class="masthead__menu-item">
-              <a href="http://192.168.100.100:4000/life/" >Life</a>
+              <a href="http://172.17.10.122:4000/life/" >Life</a>
             </li>
           
             
             <li class="masthead__menu-item">
-              <a href="http://192.168.100.100:4000/about/" >About</a>
+              <a href="http://172.17.10.122:4000/about/" >About</a>
             </li>
           
         </ul>
@@ -476,6 +476,56 @@ https://www.digitalocean.com/community/tutorials/how-to-install-mysql-on-centos-
   
     
       
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        <li>
+          <a href="#centos-7-x">
+            <strong>centos 7.x</strong> <span class="taxonomy__count">3</span>
+          </a>
+        </li>
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  
+    
+      
         <li>
           <a href="#secret">
             <strong>secret</strong> <span class="taxonomy__count">2</span>
@@ -518,17 +568,21 @@ https://www.digitalocean.com/community/tutorials/how-to-install-mysql-on-centos-
       
     
       
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
         <li>
-          <a href="#centos-7-x">
-            <strong>centos 7.x</strong> <span class="taxonomy__count">2</span>
+          <a href="#init">
+            <strong>init</strong> <span class="taxonomy__count">2</span>
           </a>
         </li>
-      
-    
-      
-    
-      
-    
       
     
       
@@ -604,12 +658,6 @@ https://www.digitalocean.com/community/tutorials/how-to-install-mysql-on-centos-
       
     
       
-        <li>
-          <a href="#init">
-            <strong>init</strong> <span class="taxonomy__count">1</span>
-          </a>
-        </li>
-      
     
       
         <li>
@@ -667,9 +715,179 @@ https://www.digitalocean.com/community/tutorials/how-to-install-mysql-on-centos-
         </li>
       
     
+      
+        <li>
+          <a href="#grub">
+            <strong>grub</strong> <span class="taxonomy__count">1</span>
+          </a>
+        </li>
+      
+    
+      
+        <li>
+          <a href="#eth0">
+            <strong>eth0</strong> <span class="taxonomy__count">1</span>
+          </a>
+        </li>
+      
+    
   
 </ul>
 
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      <section id="centos-7-x" class="taxonomy__section">
+        <h2 class="archive__subtitle">centos 7.x</h2>
+        <div class="entries-list">
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/systems/change-centos7-ifcfg-name-in-three-steps" rel="permalink">3步修改 CentOS7 网卡名为 eth0
+</a>
+      
+    </h2>
+
+    <!-- dvhart: date read-time meta line -->
+    <p class="page__meta">
+      
+        <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2018-11-18">November 18, 2018</time>&emsp;
+      
+      <i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;
+
+
+
+
+  less than 1 minute read
+
+    </p>
+    <!-- end dvhart date read-time meta line -->
+
+    <p class="archive__item-excerpt" itemprop="description">简单3步，将 CentOS7 网卡名由 ensxx 修改为 eth0。
+</p>
+  </article>
+</div>
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/systems/centos7-system-init" rel="permalink">CentOS 7.x 系统初始化配置
+</a>
+      
+    </h2>
+
+    <!-- dvhart: date read-time meta line -->
+    <p class="page__meta">
+      
+        <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2018-08-05">August 05, 2018</time>&emsp;
+      
+      <i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;
+
+
+
+
+  1 minute read
+
+    </p>
+    <!-- end dvhart date read-time meta line -->
+
+    <p class="archive__item-excerpt" itemprop="description">CentOS 7.x 系统初始化配置，适用于常规用途或用于制作 vmware/openstack 的模版镜像。
+</p>
+  </article>
+</div>
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/systems/install-jekyll-minimal-mistakes-using-ruby-managed-by-rvm" rel="permalink">在 CentOS7 上使用 rvm 安装 ruby 并配置 Jeykll 使用 minimal-mistakes 主题
+</a>
+      
+    </h2>
+
+    <!-- dvhart: date read-time meta line -->
+    <p class="page__meta">
+      
+        <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2018-08-02">August 02, 2018</time>&emsp;
+      
+      <i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;
+
+
+
+
+  1 minute read
+
+    </p>
+    <!-- end dvhart date read-time meta line -->
+
+    <p class="archive__item-excerpt" itemprop="description">在 CentOS7 上使用 rvm 安装 ruby 并配置 Jeykll 使用 minimal-mistakes 主题
+</p>
+  </article>
+</div>
+          
+        </div>
+        <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+      </section>
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
 
   
     
@@ -1065,9 +1283,53 @@ https://www.digitalocean.com/community/tutorials/how-to-install-mysql-on-centos-
     
   
     
-      <section id="centos-7-x" class="taxonomy__section">
-        <h2 class="archive__subtitle">centos 7.x</h2>
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      <section id="init" class="taxonomy__section">
+        <h2 class="archive__subtitle">init</h2>
         <div class="entries-list">
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/systems/change-centos7-ifcfg-name-in-three-steps" rel="permalink">3步修改 CentOS7 网卡名为 eth0
+</a>
+      
+    </h2>
+
+    <!-- dvhart: date read-time meta line -->
+    <p class="page__meta">
+      
+        <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2018-11-18">November 18, 2018</time>&emsp;
+      
+      <i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;
+
+
+
+
+  less than 1 minute read
+
+    </p>
+    <!-- end dvhart date read-time meta line -->
+
+    <p class="archive__item-excerpt" itemprop="description">简单3步，将 CentOS7 网卡名由 ensxx 修改为 eth0。
+</p>
+  </article>
+</div>
           
             
 
@@ -1093,7 +1355,7 @@ https://www.digitalocean.com/community/tutorials/how-to-install-mysql-on-centos-
 
 
 
-  less than 1 minute read
+  1 minute read
 
     </p>
     <!-- end dvhart date read-time meta line -->
@@ -1103,49 +1365,9 @@ https://www.digitalocean.com/community/tutorials/how-to-install-mysql-on-centos-
   </article>
 </div>
           
-            
-
-
-
-<div class="list__item">
-  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
-    
-    <h2 class="archive__item-title" itemprop="headline">
-      
-        <a href="/systems/install-jekyll-minimal-mistakes-using-ruby-managed-by-rvm" rel="permalink">在 CentOS7 上使用 rvm 安装 ruby 并配置 Jeykll 使用 minimal-mistakes 主题
-</a>
-      
-    </h2>
-
-    <!-- dvhart: date read-time meta line -->
-    <p class="page__meta">
-      
-        <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2018-08-02">August 02, 2018</time>&emsp;
-      
-      <i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;
-
-
-
-
-  1 minute read
-
-    </p>
-    <!-- end dvhart date read-time meta line -->
-
-    <p class="archive__item-excerpt" itemprop="description">在 CentOS7 上使用 rvm 安装 ruby 并配置 Jeykll 使用 minimal-mistakes 主题
-</p>
-  </article>
-</div>
-          
         </div>
         <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
       </section>
-    
-  
-    
-  
-    
-  
     
   
     
@@ -1400,48 +1622,6 @@ https://www.digitalocean.com/community/tutorials/how-to-install-mysql-on-centos-
       </section>
     
   
-    
-      <section id="init" class="taxonomy__section">
-        <h2 class="archive__subtitle">init</h2>
-        <div class="entries-list">
-          
-            
-
-
-
-<div class="list__item">
-  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
-    
-    <h2 class="archive__item-title" itemprop="headline">
-      
-        <a href="/systems/centos7-system-init" rel="permalink">CentOS 7.x 系统初始化配置
-</a>
-      
-    </h2>
-
-    <!-- dvhart: date read-time meta line -->
-    <p class="page__meta">
-      
-        <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2018-08-05">August 05, 2018</time>&emsp;
-      
-      <i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;
-
-
-
-
-  less than 1 minute read
-
-    </p>
-    <!-- end dvhart date read-time meta line -->
-
-    <p class="archive__item-excerpt" itemprop="description">CentOS 7.x 系统初始化配置，适用于常规用途或用于制作 vmware/openstack 的模版镜像。
-</p>
-  </article>
-</div>
-          
-        </div>
-        <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
-      </section>
     
   
     
@@ -1743,6 +1923,94 @@ https://www.digitalocean.com/community/tutorials/how-to-install-mysql-on-centos-
     <!-- end dvhart date read-time meta line -->
 
     <p class="archive__item-excerpt" itemprop="description">当物理服务器宕机又无法正常开机，我们就需要将原来运行在这台服务器上的虚拟机，快速迁移到其它正常的物理服务器上，迅速恢复服务，实现服务的高可用。
+</p>
+  </article>
+</div>
+          
+        </div>
+        <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+      </section>
+    
+  
+    
+      <section id="grub" class="taxonomy__section">
+        <h2 class="archive__subtitle">grub</h2>
+        <div class="entries-list">
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/systems/change-centos7-ifcfg-name-in-three-steps" rel="permalink">3步修改 CentOS7 网卡名为 eth0
+</a>
+      
+    </h2>
+
+    <!-- dvhart: date read-time meta line -->
+    <p class="page__meta">
+      
+        <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2018-11-18">November 18, 2018</time>&emsp;
+      
+      <i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;
+
+
+
+
+  less than 1 minute read
+
+    </p>
+    <!-- end dvhart date read-time meta line -->
+
+    <p class="archive__item-excerpt" itemprop="description">简单3步，将 CentOS7 网卡名由 ensxx 修改为 eth0。
+</p>
+  </article>
+</div>
+          
+        </div>
+        <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+      </section>
+    
+  
+    
+      <section id="eth0" class="taxonomy__section">
+        <h2 class="archive__subtitle">eth0</h2>
+        <div class="entries-list">
+          
+            
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/systems/change-centos7-ifcfg-name-in-three-steps" rel="permalink">3步修改 CentOS7 网卡名为 eth0
+</a>
+      
+    </h2>
+
+    <!-- dvhart: date read-time meta line -->
+    <p class="page__meta">
+      
+        <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2018-11-18">November 18, 2018</time>&emsp;
+      
+      <i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;
+
+
+
+
+  less than 1 minute read
+
+    </p>
+    <!-- end dvhart date read-time meta line -->
+
+    <p class="archive__item-excerpt" itemprop="description">简单3步，将 CentOS7 网卡名由 ensxx 修改为 eth0。
 </p>
   </article>
 </div>
