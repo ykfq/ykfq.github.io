@@ -16,6 +16,7 @@ tags:
 ---
 
 This is an system init installation of centos 7 for template use.
+
 ### 1. Personalization
 
 ```bash
@@ -24,6 +25,7 @@ HISTTIMEFORMAT="%F %T "
 alias ls='ls --color=auto --time-style +"%T %F"'
 alias ll='ls -lh'
 alias vi='vim'
+alias grep='grep --color'
 
 function mkcd
 {
@@ -51,7 +53,7 @@ EOF
 echo "Asia/shanghai" > /etc/timezone && \
 ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
-sed -i '/SELINUX/ s/enforcing/permissive/g' /etc/selinux/config
+sed -i '/SELINUX/ s/enforcing/permissive/g' /etc/selinux/config && setenforce 0
 sed -i 's/^#UseDNS yes/UseDNS no/' /etc/ssh/sshd_config
 sed -i 's/^#PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config
 ```
@@ -103,7 +105,52 @@ systemctl disable firewalld
 ### 7. System tunning
 
 Coming soon...
-```
+```bash
+# Turn off hugepage 
+echo never >> /sys/kernel/mm/transparent_hugepage/enabled
+echo never >> /sys/kernel/mm/transparent_hugepage/defrag
 
+#  Setting sysctl
+cat >> /etc/sysctl.conf << EOF
 
+net.ipv4.ip_forward=1
+net.bridge.bridge-nf-call-iptables=1
+net.bridge.bridge-nf-call-ip6tables=1
+net.ipv4.tcp_max_syn_backlog=65536
+net.core.netdev_max_backlog=32768
+net.core.somaxconn=32768
+net.core.wmem_default=8388608
+net.core.rmem_default=8388608
+net.core.rmem_max=16777216
+net.core.wmem_max=16777216
+net.ipv4.tcp_timestamps=1
+net.ipv4.tcp_synack_retries=2
+net.ipv4.tcp_syn_retries=2
+net.ipv4.tcp_tw_recycle=0
+net.ipv4.tcp_tw_reuse=1
+net.ipv4.tcp_mem=94500000 915000000 927000000
+net.ipv4.tcp_max_orphans=3276800
+net.ipv4.tcp_fin_timeout=30
+net.ipv4.ip_local_port_range=1024 65535
+fs.nr_open=10000000
+fs.file-max=10000000
+kernel.sem=50100 128256000 50100 2560
+kernel.shmmax=68719476736
+kernel.shmall=68719476736
+vm.overcommit_memory=1
+vm.swappiness=1
+EOF
+
+# Set limits
+cat >> /etc/security/limits.d/20-nproc.conf << EOF
+
+*       soft    nproc   100000
+root    soft    nproc   unlimited
+*       soft    nofile  100000
+*       hard    nofile  1000000
+*       hard    nproc   1000000
+EOF
+
+# Make sysctl take effect
+sysctl -p
 ```
